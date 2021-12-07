@@ -9,7 +9,7 @@ class CultureParty extends Program {
         return new char[taille];
     }
 
-    void afficherMap(char[] map) {
+    void afficherMap(char[] map, Joueur joueur) {
         // ╔╗╚╝═║╦╩╠╣
         // println("╔═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╗");
         // println("║     ║     ║     ║     ║     ║     ║     ║     ║     ║     ║");
@@ -26,7 +26,11 @@ class CultureParty extends Program {
         println("╗");
         // joueur
         for (int i=0;i<len;i++) {
-            print("║     ");
+            if (i == joueur.position) {
+                print("║  " + joueur.nom + "  ");
+            } else {
+                print("║     ");
+            }
         }
         println("║");
         // type de case
@@ -42,8 +46,20 @@ class CultureParty extends Program {
         println("╝");
     }
 
+    Joueur creerJoueur() {
+        Joueur joueur = new Joueur();
+        return joueur;
+    }
+
+    void effectuerDeplacement(Joueur joueur) {
+        joueur.position++;
+    }
+
     void algorithm() {
-        char[] map = creerMap(15);
-        afficherMap(map);
+        char[] map = creerMap(10);
+        Joueur joueur = creerJoueur();
+        afficherMap(map, joueur);
+        effectuerDeplacement(joueur);
+        afficherMap(map, joueur);
     }
 }

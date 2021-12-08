@@ -19,29 +19,29 @@ class CultureParty extends Program {
         int len = length(map);
         // utilisation de boucles for pour pouvoir gérer l'affichage du type de case et du joueur
         // haut
-        print("╔═════");
+        print("╔══════");
         for (int i=1;i<len;i++) {
-            print("╦═════");
+            print("╦══════");
         }
         println("╗");
         // joueur
         for (int i=0;i<len;i++) {
             if (i == joueur.position) {
-                print("║  " + joueur.nom + "  ");
+                print("║  " + joueur.nom + "   ");
             } else {
-                print("║     ");
+                print("║      ");
             }
         }
         println("║");
         // type de case
         for (int i=0;i<len;i++) {
-            print("║     ");
+            print("║      ");
         }
         println("║");
         // bas
-        print("╚═════");
+        print("╚══════");
         for (int i=1;i<len;i++) {
-            print("╩═════");
+            print("╩══════");
         }
         println("╝");
     }

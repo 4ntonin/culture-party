@@ -1,10 +1,11 @@
 class CultureParty extends Program {
-    static char VIDE = ' ';
-    static char BOOSTER = 'B';
-    static char RALENTISSEUR = 'R';
-    static char AJOUTPOINTS = 'A';
-    static char SUPPRESSIONPOINTS = 'S';
-    static char MINIJEU = 'J';
+    final char VIDE = ' ';
+    final char BOOSTER = 'B';
+    final char RALENTISSEUR = 'R';
+    final char AJOUTPOINTS = 'A';
+    final char SUPPRESSIONPOINTS = 'S';
+    final char MINIJEU = 'J';
+    Joueur joueur = new Joueur();
 
     char[] creerMapRoute66(int taille) {
         char[] map = new char[taille];
@@ -33,7 +34,7 @@ class CultureParty extends Program {
     }
 
 
-    void afficherMap(char[] map, Joueur joueur) {
+    void afficherMap(char[] map) {
         // ╔╗╚╝═║╦╩╠╣    = caractères utilisables pour la map
         // Exemple de Route 66:
         // ╔═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╗
@@ -72,23 +73,100 @@ class CultureParty extends Program {
         println("╝");
     }
 
-    Joueur creerJoueur() {
-        Joueur joueur = new Joueur();
-        return joueur;
+    int lancerDe(int taille) {
+        return (int) (random() * taille + 1);
     }
 
-    void effectuerDeplacement(Joueur joueur, int deplacement) {
+    void effectuerDeplacement(int deplacement) {
         joueur.position += deplacement;
         if (joueur.position < 0) joueur.position = 0;
     }
 
-    void algorithm() {  // algo de test du jeu (même s'il faudra écrire des fonctions test pour la note ;) )
-        char[] map = creerMapRoute66(13);  // peut-être laisser le joueur choisir entre 3 tailles genre 10, 15, 20
-        Joueur joueur = creerJoueur();
-        afficherMap(map, joueur);
-        int randdeplacement = (int) (random() * 5 - 2);  // effectué ici en test mais sera effectué plus tard
-        if (randdeplacement == 0) randdeplacement = 1;   // à l'aide des cases évènements
-        effectuerDeplacement(joueur, randdeplacement);
-        afficherMap(map, joueur);
+    void lancerEvent(char[] map) {
+        char caseactuelle = map[joueur.position];
+        if (caseactuelle == BOOSTER) {
+            eventBooster();
+        } else if (caseactuelle == RALENTISSEUR) {
+            eventRalentisseur();
+        } else if (caseactuelle == AJOUTPOINTS) {
+            eventAjoutPoints();
+        } else if (caseactuelle == SUPPRESSIONPOINTS) {
+            eventSupressionPoints();
+        } else if (caseactuelle == MINIJEU) {
+            eventMiniJeu();
+        }
+    }
+
+    void eventBooster() {
+        // dé
+        int randint = (int) (random() * 3 + 1);
+        effectuerDeplacement(randint);
+    }
+
+    void eventRalentisseur() {
+        // dé
+        int randint = (int) (random() * 3 - 3);
+        effectuerDeplacement(randint);
+    }
+
+    // PAS ENCORE IMPLANTABLE (donc vide)
+
+    void eventAjoutPoints() {
+        ;
+    }
+
+    void eventSupressionPoints() {
+        ;
+    }
+
+    void eventMiniJeu() {
+        ;
+    }
+
+    void clearTerminal() {
+        print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+    void algorithm() {
+
+        // PARAMETRAGE
+        clearTerminal();
+        print("\n\n\n");
+        for (int i=0;i<132/2-14;i++) print(" ");
+        println("Bienvenue dans Culture Party");
+        print("\n\n\n");
+
+        for (int i=0;i<132/2-21;i++) print(" ");
+        println("Veuillez sélectionner une taille de Carte.\n");
+        for (int i=0;i<132/2-14;i++) print(" ");
+        println("10     |     15     |     20");
+        int taillemap = 0;
+        while (taillemap != 10 && taillemap != 15 && taillemap != 20) taillemap = readInt();
+        char[] map = creerMapRoute66(taillemap);
+        clearTerminal();
+
+        print("\n\n\n");
+        for (int i=0;i<132/2-23;i++) print(" ");
+        println("Veuillez sélectionner le nombre de faces du dé\n");
+        for (int i=0;i<132/2-14;i++) print(" ");
+        println("3       |       6");
+        int taillede = 0;
+        while (taillede != 3 && taillede != 6) taillede = readInt();
+
+        // JEU
+        while (joueur.position < taillemap - 1) {
+            clearTerminal();
+            afficherMap(map);
+            for (int i=0;i<132/2-18;i++) print(" ");
+            print("\n\n\n");
+            println("Appuyez sur Entrer pour lancer le dé");
+            readString();
+            effectuerDeplacement(lancerDe(taillede));
+            lancerEvent(map);
+        }
+        afficherMap(map);
     }
 }
+
+// il faudra écrire des fonctions test

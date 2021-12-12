@@ -2,10 +2,12 @@ class CultureParty extends Program {
     final char VIDE = ' ';
     final char BOOSTER = 'B';
     final char RALENTISSEUR = 'R';
-    final char AJOUTPOINTS = 'A';
-    final char SUPPRESSIONPOINTS = 'S';
     final char MINIJEU = 'J';
     Joueur joueur = new Joueur();
+    QuestionVide[] qvides = new QuestionVide[]{creerQuestionVide("Quel est le nom de la planète sur laquelle nous vivons ?", "La Terre", "Mars", "La Lune", "Le Japon", 'A', "Notre planète s'appelle La Terre."),
+                                            creerQuestionVide("Quel est le nom du satellite naturel de la Terre ?", "Mars", "Jupiter", "La Lune", "Spoutnik", 'C', "Le satellite naturel de la Terre est la Lune."),
+                                            creerQuestionVide("Vrai ou Faux ? Le corps humain est composé à environ 70% d'eau.", "Vrai", "Faux", 'A', "Pour un humain adulte, le corps humain est composé d'environ 70% d'eau.")};
+
 
     char[] creerMapRoute66(int taille) {
         char[] map = new char[taille];
@@ -22,10 +24,6 @@ class CultureParty extends Program {
                 map[randompos] = BOOSTER;
             } else if (i%5 == 1) {
                 map[randompos] = RALENTISSEUR;
-            } else if (i%5 == 2) {
-                map[randompos] = AJOUTPOINTS;
-            } else if (i%5 == 3) {
-                map[randompos] = SUPPRESSIONPOINTS;
             } else {
                 map[randompos] = MINIJEU;
             }
@@ -92,16 +90,36 @@ class CultureParty extends Program {
         if (joueur.position < 0) joueur.position = 0;
     }
 
+    QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
+        QuestionVide q = new QuestionVide();
+        q.question = question;
+        q.choix = new String[2];
+        q.choix[0] = choix1;
+        q.choix[1] = choix2;
+        q.rep = rep;
+        q.explication = explication;
+        return q;
+    }
+
+    QuestionVide creerQuestionVide(String question, String choix1, String choix2, String choix3, String choix4, char rep, String explication) {  // 4 choix
+        QuestionVide q = new QuestionVide();
+        q.question = question;
+        q.choix = new String[4];
+        q.choix[0] = choix1;
+        q.choix[1] = choix2;
+        q.choix[2] = choix3;
+        q.choix[3] = choix4;
+        q.rep = rep;
+        q.explication = explication;
+        return q;
+    }
+
     void lancerEvent(char[] map) {
         char caseactuelle = map[joueur.position];
         if (caseactuelle == BOOSTER) {
             eventBooster(map);
         } else if (caseactuelle == RALENTISSEUR) {
             eventRalentisseur(map);
-        } else if (caseactuelle == AJOUTPOINTS) {
-            eventAjoutPoints();
-        } else if (caseactuelle == SUPPRESSIONPOINTS) {
-            eventSupressionPoints();
         } else if (caseactuelle == MINIJEU) {
             eventMiniJeu();
         } else {
@@ -121,21 +139,38 @@ class CultureParty extends Program {
         effectuerDeplacement(randint, map);
     }
 
-    // PAS ENCORE IMPLANTABLES (donc vides)
-    void eventAjoutPoints() {
-        ;
-    }
-
-    void eventSupressionPoints() {
-        ;
-    }
-
     void eventMiniJeu() {
         ;
     }
 
     void eventQuestion() {
-        ; // poser une question si case vide
+        println("\n\n");
+        QuestionVide randomq = qvides[(int) (random() * length(qvides))];
+        println(randomq.question);
+        println("\n");
+        for (char i='A';i<length(randomq.choix)+'A';i=(char) (i+1)) {
+            println(i + " : " + randomq.choix[i - 'A']);
+        }
+        println();
+        char guess = ' ';
+        do {
+            try {
+                print("Entrez votre réponse : ");
+                guess = readChar();
+            } catch (Exception e) {
+                print("Erreur. ");
+            }
+        } while (guess < 'A' || guess > 'A' + length(randomq.choix));
+        
+        if (guess == randomq.rep) {
+            joueur.pieces++;
+            println("Bonne réponse! Vous gagnez une pièce.");
+            println(randomq.explication);
+            println("\nVous avez maintenant " + joueur.pieces + " pièces!");
+        } else {
+            println("Mauvaise réponse...");
+            println(randomq.explication);
+        }
     }
 
     void clearTerminal() {
@@ -191,10 +226,6 @@ class CultureParty extends Program {
                 print("Booster!\nVous allez avancer d'un nombre de cases aléatoire.");
             } else if (map[joueur.position] == RALENTISSEUR) {
                 print("Ralentisseur...\nVous allez reculer d'un nombre de cases aléatoire.");
-            } else if (map[joueur.position] == AJOUTPOINTS) {
-                print("Ajout de points!\nVous allez recevoir un nombre de points aléatoire.");
-            } else if (map[joueur.position] == SUPPRESSIONPOINTS) {
-                print("Supression de points...\nVous allez perdre un nombre de points aléatoire.");
             } else if (map[joueur.position] == MINIJEU) {
                 print("Mini-Jeu!");
             } else {
@@ -209,7 +240,7 @@ class CultureParty extends Program {
                 afficherMap(map);
             }
         }
-        println("Bravo! Vous avez fini cette partie avec un total de ?? points!");
+        println("Bravo! Vous avez fini cette partie avec un total de " + joueur.pieces + " pièces!");
 
     }
 }

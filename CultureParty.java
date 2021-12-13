@@ -4,6 +4,7 @@ class CultureParty extends Program {
     final char RALENTISSEUR = 'R';
     final char MINIJEU = 'J';
     Joueur joueur = new Joueur();
+    // Sans doute mettre les questions dans un csv pour faciliter l'ajout / supression et la lecture / écriture du code
     QuestionVide[] qvides = new QuestionVide[]{creerQuestionVide("Quel est le nom de la planète sur laquelle nous vivons ?", "La Terre", "Mars", "La Lune", "Le Japon", 'A', "Notre planète s'appelle La Terre."),
                                             creerQuestionVide("Quel est le nom du satellite naturel de la Terre ?", "Mars", "Jupiter", "La Lune", "Spoutnik", 'C', "Le satellite naturel de la Terre est la Lune."),
                                             creerQuestionVide("Vrai ou Faux ? Le corps humain est composé à environ 70% d'eau.", "Vrai", "Faux", 'A', "Pour un humain adulte, le corps humain est composé d'environ 70% d'eau.")};
@@ -20,9 +21,9 @@ class CultureParty extends Program {
             do {
                 randompos = (int) (random() * (taille - 2) + 1);
             } while (map[randompos] != VIDE);
-            if (i%5 == 0) {
+            if (i%4 == 0) {
                 map[randompos] = BOOSTER;
-            } else if (i%5 == 1) {
+            } else if (i%4 == 1) {
                 map[randompos] = RALENTISSEUR;
             } else {
                 map[randompos] = MINIJEU;
@@ -41,6 +42,7 @@ class CultureParty extends Program {
 
         int len = length(map);
         // utilisation de boucles for pour pouvoir gérer l'affichage du type de case et du joueur
+        println("\n");
         // haut -------------------------------------------------- 
         print("╔═════");
         for (int i=1;i<len;i++) {
@@ -50,7 +52,11 @@ class CultureParty extends Program {
         // joueur ------------------------------------------------
         for (int i=0;i<len;i++) {
             if (i == joueur.position) {
-                print("║  " + joueur.nom + "  ");
+                print("║  ");
+                text("red");
+                print(joueur.nom);
+                reset();
+                print("  ");
             } else {
                 print("║     ");
             }
@@ -58,8 +64,17 @@ class CultureParty extends Program {
         println("║");
         // type de case ------------------------------------------
         for (int i=0;i<len;i++) {
-            print("║  " + map[i] + "  ");
-            // print("║      ");
+            print("║  ");
+            if (map[i] == BOOSTER) {
+                text("green");
+            } else if (map[i] == RALENTISSEUR) {
+                text("yellow");
+            } else if (map[i] == MINIJEU) {
+                text("blue");
+            }
+            print(map[i] + "");
+            reset();
+            print("  ");
         }
         println("║");
         // bas ---------------------------------------------------
@@ -85,9 +100,24 @@ class CultureParty extends Program {
             i++;
             clearTerminal();
             afficherMap(map);
-            readString();  // A REMPLACER PAR FONCTION TIME pour attendre 0.5sec avant d'avancer
+            delay(500);
         }
         if (joueur.position < 0) joueur.position = 0;
+    }
+
+    void affichageCaseActuelle(char[] map) {
+        char caseactuelle = map[joueur.position];
+        print("\n\nVous êtes tombé sur une case ");
+        if (caseactuelle == BOOSTER) {
+            print("Booster!\nVous allez avancer d'un nombre de cases aléatoire et gagner des pièces!");
+        } else if (caseactuelle == RALENTISSEUR) {
+            print("Ralentisseur...\nVous allez reculer d'un nombre de cases aléatoire.");
+        } else if (caseactuelle == MINIJEU) {
+            print("Mini-Jeu!");
+        } else {
+            print("vide.\nVous devez répondre à une question pour gagner un point!");
+        }
+        readString();
     }
 
     QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
@@ -128,15 +158,20 @@ class CultureParty extends Program {
     }
 
     void eventBooster(char[] map) {
-        // dé
+        // dé ?
         int randint = (int) (random() * 3 + 1);
+        joueur.pieces += randint;
         effectuerDeplacement(randint, map);
+        affichageCaseActuelle(map);
+        lancerEvent(map);
     }
 
     void eventRalentisseur(char[] map) {
-        // dé
+        // dé ?
         int randint = (int) (random() * 3 - 3);
         effectuerDeplacement(randint, map);
+        affichageCaseActuelle(map);
+        lancerEvent(map);
     }
 
     void eventMiniJeu() {
@@ -161,16 +196,16 @@ class CultureParty extends Program {
                 print("Erreur. ");
             }
         } while (guess < 'A' || guess > 'A' + length(randomq.choix));
-        
         if (guess == randomq.rep) {
             joueur.pieces++;
-            println("Bonne réponse! Vous gagnez une pièce.");
+            println("\nBonne réponse! Vous gagnez une pièce.");
             println(randomq.explication);
             println("\nVous avez maintenant " + joueur.pieces + " pièces!");
         } else {
-            println("Mauvaise réponse...");
+            println("\nMauvaise réponse...");
             println(randomq.explication);
         }
+        readString();
     }
 
     void clearTerminal() {
@@ -221,20 +256,9 @@ class CultureParty extends Program {
             println("Vous avez fait " + resde + " !");
             readString();
             effectuerDeplacement(resde, map);
-            print("Vous êtes tombé sur une case ");
-            if (map[joueur.position] == BOOSTER) {
-                print("Booster!\nVous allez avancer d'un nombre de cases aléatoire.");
-            } else if (map[joueur.position] == RALENTISSEUR) {
-                print("Ralentisseur...\nVous allez reculer d'un nombre de cases aléatoire.");
-            } else if (map[joueur.position] == MINIJEU) {
-                print("Mini-Jeu!");
-            } else {
-                print("vide.\nVous devez répondre à une question pour gagner un point!");
-            }
-            readString();
+            affichageCaseActuelle(map);
             lancerEvent(map);
             print("\n\n");
-            readString();
             if (map[joueur.position] != VIDE) {
                 clearTerminal();
                 afficherMap(map);

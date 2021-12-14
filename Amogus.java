@@ -6,17 +6,18 @@ class Amogus extends Program {
     QuestionImposteur[] bddQuestion = creerBddQuestion();
 
     QuestionImposteur[] creerBddQuestion(){
-        CSVFiles csvQImposteur = loadCSV("QuestionImposteur.csv");
+        CSVFile csvQImposteur = loadCSV("QuestionImposteur.csv");
         int tailleFichier = rowCount(csvQImposteur);
-        QuestionImposteur bdd = QuestionImposteur[tailleFichier];
+        QuestionImposteur[] bdd = new QuestionImposteur[tailleFichier];
         for(int i =1; i<tailleFichier;i= i + 1){
-            bddQuestion.theme=getCell(csvQImposteur,i,0);
-            bddQuestion.choix[1]= getCell(csvQImposteur, i, 1);
-            bddQuestion.choix[2]= getCell(csvQImposteur, i, 2);
-            bddQuestion.choix[3]= getCell(csvQImposteur, i, 3);
-            bddQuestion.choix[4]= getCell(csvQImposteur, i, 4);
-            bddQuestion.rep= getCell(csvQImposteur, i, 5);
+            bdd[i-1].theme = getCell(csvQImposteur,i,0);
+            bdd[i-1].choix[0] = getCell(csvQImposteur, i, 1);
+            bdd[i-1].choix[1] = getCell(csvQImposteur, i, 2);
+            bdd[i-1].choix[2] = getCell(csvQImposteur, i, 3);
+            bdd[i-1].choix[3] = getCell(csvQImposteur, i, 4);
+            bdd[i-1].rep = getCell(csvQImposteur, i, 5);
         }
+        return bdd;
     }
     
     QuestionImposteur tirageQuestion(QuestionImposteur[] bdd){
@@ -85,8 +86,14 @@ class Amogus extends Program {
         
         QuestionImposteur selection = tirageQuestion(bddQuestion);
         afficherAmogus();
-        println("la personne A dit : " + selection.choix[0] + "     la personne B dit : " + selection.choix[1]);
-        println("la personne C dit : " + selection.choix[2] + "     la personne D dit : " + selection.choix[3]);
+        println("la personne A dit : " + selection.choix[0]);
+        println("──────────────────────────────────────────────────────────────────");
+        println("la personne B dit : " + selection.choix[1]);
+        println("──────────────────────────────────────────────────────────────────");
+        println("la personne C dit : " + selection.choix[2]);
+        println("──────────────────────────────────────────────────────────────────");
+        println("la personne D dit : " + selection.choix[3]);
+        println("──────────────────────────────────────────────────────────────────");
         println("Sélectionner votre réponse :");
 
         

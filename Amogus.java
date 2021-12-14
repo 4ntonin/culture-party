@@ -1,110 +1,104 @@
+import extensions.CSVFile;
+
 class Amogus extends Program {
-    QuestionImposteur creerQuestion(String theme, String p1 ,String p2,String p3,String p4,String rep){
-        QuestionImposteur q1 = new QuestionImposteur();
-        q1.theme = theme;
-        q1.choix[0] = p1;
-        q1.choix[1] = p2;
-        q1.choix[2] = p3;
-        q1.choix[3] = p4;
-        q1.rep =rep;
-        return q1;
+    CultureParty cp = new CultureParty();
+
+    QuestionImposteur[] bddQuestion = creerBddQuestion();
+
+    QuestionImposteur[] creerBddQuestion(){
+        CSVFiles csvQImposteur = loadCSV("QuestionImposteur.csv");
+        int tailleFichier = rowCount(csvQImposteur);
+        QuestionImposteur bdd = QuestionImposteur[tailleFichier];
+        for(int i =1; i<tailleFichier;i= i + 1){
+            bddQuestion.theme=getCell(csvQImposteur,i,0);
+            bddQuestion.choix[1]= getCell(csvQImposteur, i, 1);
+            bddQuestion.choix[2]= getCell(csvQImposteur, i, 2);
+            bddQuestion.choix[3]= getCell(csvQImposteur, i, 3);
+            bddQuestion.choix[4]= getCell(csvQImposteur, i, 4);
+            bddQuestion.rep= getCell(csvQImposteur, i, 5);
+        }
     }
-    void testCreerQuestion(){
-        QuestionImposteur test = creerQuestion("president","Donald Trump","Bill Gates","Francois Hollande","Emmanuel Macron","Bill Gates");
-        assertEquals(test.choix[0],"Donald Trump");
-        assertEquals(test.choix[1],"Bill Gates");
-        assertEquals(test.choix[2],"Francois Hollande");
-        assertEquals(test.choix[3],"Emmanuel Macron");
-        assertEquals(test.theme,"president");
-        assertEquals(test.rep,test.choix[1]);
-    }
+    
     QuestionImposteur tirageQuestion(QuestionImposteur[] bdd){
         return bdd[(int)(random()*length(bdd))];
     }
+    //     void clearTerminal() {
+    //     print("\033[H\033[2J");
+    //     System.out.flush();
+    // }
+    void afficherAmogus(){
+        String[] amogus = new String[]{"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀",
+                                       "⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀",
+                                       "⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀",
+                                       "⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀",
+                                       "⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀",
+                                       "⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀",
+                                       "⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀",
+                                       "⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀",
+                                       "⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀",
+                                       "⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀",
+                                       "⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀",
+                                       "⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"};
+        println("A:                                 B:                              C:                              D:");
+        for(int i =0;i<length(amogus);i=i+1){
+            for(int j = 0; j<4;j=j+1){
+                if(j==0){
+                    text("red");
+                }else if(j==1){
+                    text("yellow");
+                }else if(j==2){
+                    text("blue");
+                }else {
+                    text("green");
+                }
+                print(amogus[i]);
+            }
+            println(); 
+        }
+        reset();
+    }
+    // void afficherTheme(QuestionImposteur selection){
+    //     // ┌ ─ │ ┐ └ ┘
+    //     println("\n\nLe thème de la question est : " + selection.theme);
+    // }
 
-        void algorithm(){
-        QuestionImposteur[] bddQuestion = new QuestionImposteur[]{creerQuestion("president","Donald Trump","Bill Gates","Francois Hollande","Emmanuel Macron","Bill Gates"),
-                                                                creerQuestion("planete","Venus","Mars","Mercurochrome","Saturne","Mercurochrome"),
-                                                                creerQuestion("monnaie","zeni","pesos","dollar","yen","zeni"),
-                                                                creerQuestion("pays","Mongolie","Inde","Afrique","Colombie","Afrique")};
+    void algorithm(){
+        cp.clearTerminal();
+        print("\n\n\n\n\n");
+        for(int i=0;i<(132/2-21/2);i=i+1) print(" ");
+        println("Le jeu de l'imposteur");
+        print("\n\n");
+        for(int i=0;i<(132/2-98/2);i=i+1) print(" ");
+        println("les règles : un thème sera donné, parmi les réponses que vous donne les personnes, une est fausse.");
+        for(int i=0;i<(132/2-53/2);i=i+1) print(" ");
+        println("Votre mission si vous l'acceptez: trouver l'imposteur");
+        readString();
+        cp.clearTerminal();
+        
         QuestionImposteur selection = tirageQuestion(bddQuestion);
-        println("Le thème de la question est : " + selection.theme);
-        println("Votre objectif : Trouver l'imposteur");
+        afficherAmogus();
         println("la personne A dit : " + selection.choix[0] + "     la personne B dit : " + selection.choix[1]);
-        println("            ⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀                            ⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀ ");               
-        println("         ⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀                     ⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀");            
-        println("         ⣼⣿⠋        ⢀⣀⣀⠈⢻⣿⣿⡄                   ⣼⣿⠋        ⢀⣀⣀⠈⢻⣿⣿⡄ ");           
-        println("        ⣸⣿⡏    ⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄                 ⣸⣿⡏    ⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄ ");    
-        println("        ⣿⣿⠁  ⢰⣿⣿⣯⠁         ⠈⠙⢿⣷⡄             ⣿⣿⠁  ⢰⣿⣿⣯⠁         ⠈⠙⢿⣷⡄ ");          
-        println(" ⣀⣤⣴⣶⣶⣿⡟     ⢸⣿⣿⣿⣆            ⣿⣷       ⣀⣤⣴⣶⣶⣿⡟     ⢸⣿⣿⣿⣆            ⣿⣷ ");
-        println("⢰⣿⡟⠋⠉⣹⣿⡇    ⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿         ⢰⣿⡟⠋⠉⣹⣿⡇    ⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿  "); 
-        println("⢸⣿⡇   ⣿⣿⡇     ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃        ⢸⣿⡇   ⣿⣿⡇     ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃  ");
-        println("⣸⣿⡇  ⣿⣿⡇       ⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇         ⣸⣿⡇  ⣿⣿⡇       ⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇    ");
-        println("⣿⣿⠁  ⣿⣿⡇                    ⢸⣿⣧      ⣿⣿⠁  ⣿⣿⡇                    ⢸⣿⣧  ");  
-        println("⣿⣿    ⣿⣿                     ⢸⣿⣿     ⣿⣿    ⣿⣿                     ⢸⣿⣿");
-        println("⣿⣿    ⣿⣿⡇                   ⢸⣿⣿      ⣿⣿    ⣿⣿⡇                   ⢸⣿⣿");
-        println("⢿⣿⡆   ⣿⣿⡇                   ⢸⣿⡇      ⢿⣿⡆   ⣿⣿⡇                   ⢸⣿⡇");
-        println("⠸⣿⣧⡀  ⣿⣿⡇                   ⣿⣿⠃     ⠸⣿⣧⡀  ⣿⣿⡇                   ⣿⣿⠃");
-        println(" ⠛⢿⣿⣿⣿⣿⣇      ⣰⣿⣿⣷⣶⣶⣶⣶⠶ ⢠⣿⣿          ⠛⢿⣿⣿⣿⣿⣇      ⣰⣿⣿⣷⣶⣶⣶⣶⠶ ⢠⣿⣿");
-        println("      ⣿⣿      ⣿⣿⡇ ⣽⣿⡏⠁  ⢸⣿⡇               ⣿⣿      ⣿⣿⡇ ⣽⣿⡏⠁  ⢸⣿⡇");
-        println("      ⣿⣿      ⣿⣿⡇ ⢹⣿⡆   ⣸⣿⠇               ⣿⣿      ⣿⣿⡇ ⢹⣿⡆   ⣸⣿⠇");
-        println("      ⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁ ⠈⠻⣿⣿⣿⣿⡿⠏                 ⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁ ⠈⠻⣿⣿⣿⣿⡿⠏");
-        println("      ⠈⠛⠻⠿⠿⠿⠿⠋⠁                            ⠈⠛⠻⠿⠿⠿⠿⠋⠁");
-                println("la personne C dit : " + selection.choix[2] + "     la personne D dit : " + selection.choix[3]);
-        println("            ⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀                            ⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀ ");               
-        println("         ⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀                     ⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀");            
-        println("         ⣼⣿⠋        ⢀⣀⣀⠈⢻⣿⣿⡄                   ⣼⣿⠋        ⢀⣀⣀⠈⢻⣿⣿⡄ ");           
-        println("        ⣸⣿⡏    ⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄                 ⣸⣿⡏    ⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄ ");    
-        println("        ⣿⣿⠁  ⢰⣿⣿⣯⠁         ⠈⠙⢿⣷⡄             ⣿⣿⠁  ⢰⣿⣿⣯⠁         ⠈⠙⢿⣷⡄ ");          
-        println(" ⣀⣤⣴⣶⣶⣿⡟     ⢸⣿⣿⣿⣆            ⣿⣷       ⣀⣤⣴⣶⣶⣿⡟     ⢸⣿⣿⣿⣆            ⣿⣷ ");
-        println("⢰⣿⡟⠋⠉⣹⣿⡇    ⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿         ⢰⣿⡟⠋⠉⣹⣿⡇    ⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿  "); 
-        println("⢸⣿⡇   ⣿⣿⡇     ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃        ⢸⣿⡇   ⣿⣿⡇     ⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃  ");
-        println("⣸⣿⡇  ⣿⣿⡇       ⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇         ⣸⣿⡇  ⣿⣿⡇       ⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇    ");
-        println("⣿⣿⠁  ⣿⣿⡇                    ⢸⣿⣧      ⣿⣿⠁  ⣿⣿⡇                    ⢸⣿⣧  ");  
-        println("⣿⣿    ⣿⣿                     ⢸⣿⣿     ⣿⣿    ⣿⣿                     ⢸⣿⣿");
-        println("⣿⣿    ⣿⣿⡇                   ⢸⣿⣿      ⣿⣿    ⣿⣿⡇                   ⢸⣿⣿");
-        println("⢿⣿⡆   ⣿⣿⡇                   ⢸⣿⡇      ⢿⣿⡆   ⣿⣿⡇                   ⢸⣿⡇");
-        println("⠸⣿⣧⡀  ⣿⣿⡇                   ⣿⣿⠃     ⠸⣿⣧⡀  ⣿⣿⡇                   ⣿⣿⠃");
-        println(" ⠛⢿⣿⣿⣿⣿⣇      ⣰⣿⣿⣷⣶⣶⣶⣶⠶ ⢠⣿⣿          ⠛⢿⣿⣿⣿⣿⣇      ⣰⣿⣿⣷⣶⣶⣶⣶⠶ ⢠⣿⣿");
-        println("      ⣿⣿      ⣿⣿⡇ ⣽⣿⡏⠁  ⢸⣿⡇               ⣿⣿      ⣿⣿⡇ ⣽⣿⡏⠁  ⢸⣿⡇");
-        println("      ⣿⣿      ⣿⣿⡇ ⢹⣿⡆   ⣸⣿⠇               ⣿⣿      ⣿⣿⡇ ⢹⣿⡆   ⣸⣿⠇");
-        println("      ⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁ ⠈⠻⣿⣿⣿⣿⡿⠏                 ⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁ ⠈⠻⣿⣿⣿⣿⡿⠏");
-        println("      ⠈⠛⠻⠿⠿⠿⠿⠋⠁                            ⠈⠛⠻⠿⠿⠿⠿⠋⠁");
-        println("Selectioner votre réponse :");
+        println("la personne C dit : " + selection.choix[2] + "     la personne D dit : " + selection.choix[3]);
+        println("Sélectionner votre réponse :");
 
-
-
-        // println("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⠋⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⠈⢻⣿⣿⡄⠀⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⣠⣶⣾⣿⣿⣿⠿⠿⠿⢿⣿⣿⣿⣄⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠁⠀⠀⢰⣿⣿⣯⠁⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣷⡄⠀");
-        // println("⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀⠀⠀⣀⣤⣴⣶⣶⣿⡟⠀⠀⠀⢸⣿⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⠀");
-        // println("⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀⠀⢰⣿⡟⠋⠉⣹⣿⡇⠀⠀⠀⠘⣿⣿⣿⣿⣷⣦⣤⣤⣤⣶⣶⣶⣶⣿⣿⣿⠀");
-        // println("⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀⠀⢸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠹⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠃⠀");
-        // println("⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀⠀⣸⣿⡇⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠉⠻⠿⣿⣿⣿⣿⡿⠿⠿⠛⢻⣿⡇⠀⠀");
-        // println("⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀⠀⣿⣿⠁⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣧⠀⠀");
-        // println("⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀");
-        // println("⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀⠀⣿⣿⠀⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⠀⠀");
-        // println("⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀⠀⢿⣿⡆⠀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⡇⠀⠀");
-        // println("⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀⠀⠸⣿⣧⡀⠀⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠃⠀⠀");
-        // println("⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀⠀⠀⠛⢿⣿⣿⣿⣿⣇⠀⠀⠀⠀⠀⣰⣿⣿⣷⣶⣶⣶⣶⠶⠀⢠⣿⣿⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⣽⣿⡏⠁⠀⠀⢸⣿⡇⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀");
-        // println("⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀");
-
-
-
+        
         char choix_joueur = readChar();
         if (equals(selection.choix[choix_joueur-'A'],selection.rep)){
             println("Bien joué tu as trouvé l'imposteur!!!");
-            println("tu gagne 2 pièces");
+            println("Tu gagnes 2 pièces.");
         }else{
-            println("Dommage c'est une mauvaise réponse");
-            println("tu perd 1 pièce");
+            println("Dommage c'est une mauvaise réponse.");
+            println("Tu perds 1 pièce.");  
         }
+        readString();
     }
 }
 

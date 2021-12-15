@@ -7,60 +7,27 @@ class CultureParty extends Program {
     final char MINIJEU = 'J';
     Joueur joueur = new Joueur();
 
-
-    // QuestionVide[] qvides = new QuestionVide[]{creerQuestionVide("Quel est le nom de la planète sur laquelle nous vivons ?", "La Terre", "Mars", "La Lune", "Le Japon", 'A', "Notre planète s'appelle La Terre."),
-    //                                         creerQuestionVide("Quel est le nom du satellite naturel de la Terre ?", "Mars", "Jupiter", "La Lune", "Spoutnik", 'C', "Le satellite naturel de la Terre est la Lune."),
-    //                                         creerQuestionVide("Vrai ou Faux ? Le corps humain est composé à environ 70% d'eau.", "Vrai", "Faux", 'A', "Pour un humain adulte, le corps humain est composé d'environ 70% d'eau.")};
-
     QuestionVide[] qvides = creerQuestionsCasesVides();
 
-    // UTILISER FONCTION CREER QUESTION
     QuestionVide[] creerQuestionsCasesVides() {
-        CSVFile csvqvides = loadCSV("./questions/QuestionsVide.csv");
-        int csvqvidesheight = rowCount(csvqvides) - 1;
-        int csvqvideswidth = columnCount(csvqvides);
-        QuestionVide[] qvidebdd = new QuestionVide[csvqvidesheight];
-        for (int i=1;i<csvqvidesheight;i++) {
-            qvidebdd[i].question = getCell(csvqvides, i, 1);
-            if (equals(getCell(csvqvides, i, 3), "")) {
-                qvidebdd[i].choix = new String[2];
-                qvidebdd[i].choix[1] = getCell(csvqvides, i, 1);
-                qvidebdd[i].choix[2] = getCell(csvqvides, i, 2);
-            } else {
-                qvidebdd[i].choix = new String[4];
-                qvidebdd[i].choix[1] = getCell(csvqvides, i, 1);
-                qvidebdd[i].choix[2] = getCell(csvqvides, i, 2);
-                qvidebdd[i].choix[3] = getCell(csvqvides, i, 3);
-                qvidebdd[i].choix[4] = getCell(csvqvides, i, 4);
-            }
-            qvidebdd[i].rep = charAt(getCell(csvqvides, i, 5), 0);
-            qvidebdd[i].explication = getCell(csvqvides, i, 6);
+        CSVFile csv = loadCSV("./questions/QuestionsVide.csv");
+        int csvheight = rowCount(csv) - 1;
+        QuestionVide[] bdd = new QuestionVide[csvheight];
+        QuestionVide q;
+        for (int i=1;i<csvheight;i++) {
+            q = new QuestionVide();
+            println(getCell(csv, i, 0));
+            q.question = getCell(csv, i, 0);
+            q.choix = new String[4];
+            q.choix[0] = getCell(csv, i, 1);
+            q.choix[1] = getCell(csv, i, 2);
+            q.choix[2] = getCell(csv, i, 3);
+            q.choix[3] = getCell(csv, i, 4);
+            q.rep = charAt(getCell(csv, i, 5), 0);
+            q.explication = getCell(csv, i, 6);
+            bdd[i-1] = q;
         }
-        return qvidebdd;
-    }
-
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[2];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.rep = rep;
-        q.explication = explication;
-        return q;
-    }
-
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, String choix3, String choix4, char rep, String explication) {  // 4 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[4];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.choix[2] = choix3;
-        q.choix[3] = choix4;
-        q.rep = rep;
-        q.explication = explication;
-        return q;
+        return bdd;
     }
 
     char[] creerMapRoute66(int taille) {
@@ -197,7 +164,7 @@ class CultureParty extends Program {
 
     void eventRalentisseur(char[] map) {
         // dé ?
-        int randint = (int) (random() * 3 - 3);
+        int randint = (int) (random() * 3 - 4);
         effectuerDeplacement(randint, map);
         affichageCaseActuelle(map);
         lancerEvent(map);
@@ -258,10 +225,6 @@ class CultureParty extends Program {
         for (int i=0;i<132/2-13;i++) print(" ");
         println("══════════════════════════");
         for (int i=0;i<132/2-14;i++) print(" ");
-        // ╔═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╗
-        // ║     ║     ║     ║     ║     ║     ║     ║     ║     ║     ║
-        // ║     ║     ║     ║     ║     ║     ║     ║     ║     ║     ║
-        // ╚═════╩═════╩═════╩═════╩═════╩═════╩═════╩═════╩═════╩═════╝
         println("Bienvenue dans Culture Party");
         for (int i=0;i<132/2-13;i++) print(" ");
         println("══════════════════════════");

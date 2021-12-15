@@ -8,7 +8,7 @@ class Amogus extends Program {
     QuestionImposteur[] creerBddQuestion(){
         CSVFile csvQImposteur = loadCSV("./questions/QuestionImposteur.csv");
         int tailleFichier = rowCount(csvQImposteur);
-        QuestionImposteur[] bdd = new QuestionImposteur[tailleFichier];
+        QuestionImposteur[] bdd = new QuestionImposteur[tailleFichier - 1];
         for(int i =1; i<tailleFichier;i= i + 1){
             QuestionImposteur quest = new QuestionImposteur();
             quest.theme = getCell(csvQImposteur,i,0);
@@ -81,7 +81,7 @@ class Amogus extends Program {
         println("┘");
     }
 
-    void algorithm(){
+    int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
         for(int i=0;i<(132/2-21/2);i=i+1) print(" ");
@@ -107,16 +107,19 @@ class Amogus extends Program {
         println("──────────────────────────────────────────────────────────────────");
         println("Sélectionner votre réponse :");
 
-        
+        int piecesgagnees = 0;
         char choix_joueur = readChar();
         if (equals(selection.choix[choix_joueur-'A'],selection.rep)){
+            piecesgagnees = 2;
             println("Bien joué tu as trouvé l'imposteur!!!");
             println("Tu gagnes 2 pièces.");
         }else{
+            piecesgagnees = -1;
             println("Dommage c'est une mauvaise réponse.");
             println("Tu perds 1 pièce.");  
         }
         readString();
+        return piecesgagnees;
     }
 }
 

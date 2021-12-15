@@ -176,7 +176,8 @@ class CultureParty extends Program {
     }
 
     void eventMiniJeu() {
-        ;
+        Amogus jeuamogus = new Amogus();
+        joueur.pieces += jeuamogus.lancerJeu();
     }
 
     void eventQuestion() {
@@ -235,7 +236,7 @@ class CultureParty extends Program {
         println("══════════════════════════");
         print("\n\n\n");
 
-        for (int i=0;i<132/2-21;i++) print(" ");
+        for (int i=0;i<132/2-16;i++) print(" ");
         println("Sélectionne une taille de Carte.\n");
         for (int i=0;i<132/2-14;i++) print(" ");
         println("10     |     15     |     20");
@@ -245,7 +246,7 @@ class CultureParty extends Program {
         clearTerminal();
 
         print("\n\n\n");
-        for (int i=0;i<132/2-23;i++) print(" ");
+        for (int i=0;i<132/2-18;i++) print(" ");
         println("Sélectionne le nombre de faces du dé\n");
         for (int i=0;i<132/2-8;i++) print(" ");
         println("3       |       6");
@@ -254,26 +255,40 @@ class CultureParty extends Program {
         clearTerminal();
 
         print("\n\n\n");
+        for (int i=0;i<132/2-14;i++) print(" ");
         println("Voici quelques indications :\n\n");
+        for (int i=0;i<132/2-22;i++) print(" ");
+        println("____________________________________________");
         text("red");
+        for (int i=0;i<132/2-7;i++) print(" ");
         print(joueur.nom);
         reset();
         println(" : C'est toi !\n");
         text("green");
+        for (int i=0;i<132/2-42;i++) print(" ");
         print(BOOSTER + "");
         reset();
         println(" : C'est un booster. Il te fera avancer de quelques cases et te donnera des pièces !\n");
         text("yellow");
+        for (int i=0;i<132/2-31;i++) print(" ");
         print(RALENTISSEUR + "");
         reset();
         println(" : C'est un ralentisseur. Il te fera reculer de quelques cases.\n");
         text("blue");
+        for (int i=0;i<132/2-23;i++) print(" ");
         print(MINIJEU + "");
         reset();
         println(" : Cette case lancera un mini-jeu aléatoire !\n");
+        for (int i=0;i<132/2-48;i++) print(" ");
         println("Quand tu tomberas sur une case vide, tu devras répondre à une question pour gagner des pièces !\n");
         print("\n\n\n\n\n\n\n");
-        println("Appuies sur Entrée pour lancer le jeu !");
+        // ┌ ─ │ ┐ └ ┘
+        for (int i=0;i<132/2-21;i++) print(" ");
+        println("┌───────────────────────────────────────┐");
+        for (int i=0;i<132/2-21;i++) print(" ");
+        println("│ Appuies sur Entrée pour lancer le jeu │");
+        for (int i=0;i<132/2-21;i++) print(" ");
+        println("└───────────────────────────────────────┘");
         readString();
 
         // JEU

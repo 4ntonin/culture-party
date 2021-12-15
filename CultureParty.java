@@ -14,15 +14,20 @@ class CultureParty extends Program {
         int csvheight = rowCount(csv) - 1;
         QuestionVide[] bdd = new QuestionVide[csvheight];
         QuestionVide q;
-        for (int i=1;i<csvheight;i++) {
+        for (int i=1;i<csvheight+1;i++) {
             q = new QuestionVide();
-            println(getCell(csv, i, 0));
             q.question = getCell(csv, i, 0);
-            q.choix = new String[4];
-            q.choix[0] = getCell(csv, i, 1);
-            q.choix[1] = getCell(csv, i, 2);
-            q.choix[2] = getCell(csv, i, 3);
-            q.choix[3] = getCell(csv, i, 4);
+            if (equals(getCell(csv, i, 3), "-")) {
+                q.choix = new String[2];
+                q.choix[0] = getCell(csv, i, 1);
+                q.choix[1] = getCell(csv, i, 2);
+            } else {
+                q.choix = new String[4];
+                q.choix[0] = getCell(csv, i, 1);
+                q.choix[1] = getCell(csv, i, 2);
+                q.choix[2] = getCell(csv, i, 3);
+                q.choix[3] = getCell(csv, i, 4);
+            }
             q.rep = charAt(getCell(csv, i, 5), 0);
             q.explication = getCell(csv, i, 6);
             bdd[i-1] = q;
@@ -235,13 +240,7 @@ class CultureParty extends Program {
         for (int i=0;i<132/2-14;i++) print(" ");
         println("10     |     15     |     20");
         int taillemap = 0;
-        do {
-            try {
-                taillemap = readInt();
-            } catch (Exception e) {
-                print("Erreur. ");
-            }
-        } while (taillemap != 10 && taillemap != 15 && taillemap != 20);
+        while (taillemap != 10 && taillemap != 15 && taillemap != 20) taillemap = readInt();
         char[] map = creerMapRoute66(taillemap);
         clearTerminal();
 

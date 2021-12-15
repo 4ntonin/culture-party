@@ -236,7 +236,7 @@ class CultureParty extends Program {
         print("\n\n\n");
 
         for (int i=0;i<132/2-21;i++) print(" ");
-        println("Veuillez sélectionner une taille de Carte.\n");
+        println("Sélectionne une taille de Carte.\n");
         for (int i=0;i<132/2-14;i++) print(" ");
         println("10     |     15     |     20");
         int taillemap = 0;
@@ -246,14 +246,35 @@ class CultureParty extends Program {
 
         print("\n\n\n");
         for (int i=0;i<132/2-23;i++) print(" ");
-        println("Veuillez sélectionner le nombre de faces du dé\n");
+        println("Sélectionne le nombre de faces du dé\n");
         for (int i=0;i<132/2-8;i++) print(" ");
         println("3       |       6");
         int taillede = 0, resde;
         while (taillede != 3 && taillede != 6) taillede = readInt();
         clearTerminal();
 
-
+        print("\n\n\n");
+        println("Voici quelques indications :\n\n");
+        text("red");
+        print(joueur.nom);
+        reset();
+        println(" : C'est toi !\n");
+        text("green");
+        print(BOOSTER + "");
+        reset();
+        println(" : C'est un booster. Il te fera avancer de quelques cases et te donnera des pièces !\n");
+        text("yellow");
+        print(RALENTISSEUR + "");
+        reset();
+        println(" : C'est un ralentisseur. Il te fera reculer de quelques cases.\n");
+        text("blue");
+        print(MINIJEU + "");
+        reset();
+        println(" : Cette case lancera un mini-jeu aléatoire !\n");
+        println("Quand tu tomberas sur une case vide, tu devras répondre à une question pour gagner des pièces !\n");
+        print("\n\n\n\n\n\n\n");
+        println("Appuies sur Entrée pour lancer le jeu !");
+        readString();
 
         // JEU
         while (joueur.position < taillemap - 1) {
@@ -261,11 +282,11 @@ class CultureParty extends Program {
             afficherMap(map);
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
-            println("Appuyez sur Entrer pour lancer le dé");
+            println("Appuies sur Entrée pour lancer le dé");
             readString();
             print("\n\n");
             resde = lancerDe(taillede);
-            println("Vous avez fait " + resde + " !");
+            println("Tu as fait " + resde + " !");
             readString();
             effectuerDeplacement(resde, map);
             affichageCaseActuelle(map);
@@ -276,7 +297,7 @@ class CultureParty extends Program {
                 afficherMap(map);
             }
         }
-        println("Bravo! Vous avez fini cette partie avec un total de " + joueur.pieces + " pièces!");
+        println("Bravo ! Tu as fini cette partie avec un total de " + joueur.pieces + " pièces !");
 
     }
 }

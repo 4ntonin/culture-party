@@ -37,7 +37,31 @@ class CultureParty extends Program {
             qvidebdd[i].explication = getCell(csvqvides, i, 6);
         }
         return qvidebdd;
-    } 
+    }
+
+    QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
+        QuestionVide q = new QuestionVide();
+        q.question = question;
+        q.choix = new String[2];
+        q.choix[0] = choix1;
+        q.choix[1] = choix2;
+        q.rep = rep;
+        q.explication = explication;
+        return q;
+    }
+
+    QuestionVide creerQuestionVide(String question, String choix1, String choix2, String choix3, String choix4, char rep, String explication) {  // 4 choix
+        QuestionVide q = new QuestionVide();
+        q.question = question;
+        q.choix = new String[4];
+        q.choix[0] = choix1;
+        q.choix[1] = choix2;
+        q.choix[2] = choix3;
+        q.choix[3] = choix4;
+        q.rep = rep;
+        q.explication = explication;
+        return q;
+    }
 
     char[] creerMapRoute66(int taille) {
         char[] map = new char[taille];
@@ -134,85 +158,19 @@ class CultureParty extends Program {
         if (joueur.position < 0) joueur.position = 0;
     }
 
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[2];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.rep = rep;
-        q.explication = explication;
-        return q;
-    }
-
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, String choix3, String choix4, char rep, String explication) {  // 4 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[4];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.choix[2] = choix3;
-        q.choix[3] = choix4;
-        q.rep = rep;
-        q.explication = explication;
     void affichageCaseActuelle(char[] map) {
         char caseactuelle = map[joueur.position];
         print("\n\nVous êtes tombé sur une case ");
         if (caseactuelle == BOOSTER) {
             print("Booster!\nVous allez avancer d'un nombre de cases aléatoire et gagner des pièces!");
         } else if (caseactuelle == RALENTISSEUR) {
-            print("Ralentisseur...\nVous allez reculer d'un nomb
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[2];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.rep = rep;
-        q.explication = explication;
-        return q;
-    }
-
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, String choix3, String choix4, char rep, String explication) {  // 4 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[4];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.choix[2] = choix3;
-        q.choix[3] = choix4;
-        q.rep = rep;
-        q.explication = explication;re de cases aléatoire.");
+            print("Ralentisseur...\nVous allez reculer d'un nombre de cases aléatoire.");
         } else if (caseactuelle == MINIJEU) {
             print("Mini-Jeu!");
         } else {
             print("vide.\nVous devez répondre à une question pour gagner un point!");
         }
         readString();
-    }
-
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, char rep, String explication) {  // 2 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[2];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.rep = rep;
-        q.explication = explication;
-        return q;
-    }
-
-    QuestionVide creerQuestionVide(String question, String choix1, String choix2, String choix3, String choix4, char rep, String explication) {  // 4 choix
-        QuestionVide q = new QuestionVide();
-        q.question = question;
-        q.choix = new String[4];
-        q.choix[0] = choix1;
-        q.choix[1] = choix2;
-        q.choix[2] = choix3;
-        q.choix[3] = choix4;
-        q.rep = rep;
-        q.explication = explication;
-        return q;
     }
 
     void lancerEvent(char[] map) {

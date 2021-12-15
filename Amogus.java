@@ -6,16 +6,18 @@ class Amogus extends Program {
     QuestionImposteur[] bddQuestion = creerBddQuestion();
 
     QuestionImposteur[] creerBddQuestion(){
-        CSVFile csvQImposteur = loadCSV("QuestionImposteur.csv");
+        CSVFile csvQImposteur = loadCSV("./questions/QuestionImposteur.csv");
         int tailleFichier = rowCount(csvQImposteur);
         QuestionImposteur[] bdd = new QuestionImposteur[tailleFichier];
         for(int i =1; i<tailleFichier;i= i + 1){
-            bdd[i-1].theme = getCell(csvQImposteur,i,0);
-            bdd[i-1].choix[0] = getCell(csvQImposteur, i, 1);
-            bdd[i-1].choix[1] = getCell(csvQImposteur, i, 2);
-            bdd[i-1].choix[2] = getCell(csvQImposteur, i, 3);
-            bdd[i-1].choix[3] = getCell(csvQImposteur, i, 4);
-            bdd[i-1].rep = getCell(csvQImposteur, i, 5);
+            QuestionImposteur quest = new QuestionImposteur();
+            quest.theme = getCell(csvQImposteur,i,0);
+            quest.choix[0] = getCell(csvQImposteur, i, 1);
+            quest.choix[1] = getCell(csvQImposteur, i, 2);
+            quest.choix[2] = getCell(csvQImposteur, i, 3);
+            quest.choix[3] = getCell(csvQImposteur, i, 4);
+            quest.rep = getCell(csvQImposteur, i, 5);
+            bdd[i-1]= quest;
         }
         return bdd;
     }
@@ -23,10 +25,7 @@ class Amogus extends Program {
     QuestionImposteur tirageQuestion(QuestionImposteur[] bdd){
         return bdd[(int)(random()*length(bdd))];
     }
-    //     void clearTerminal() {
-    //     print("\033[H\033[2J");
-    //     System.out.flush();
-    // }
+
     void afficherAmogus(){
         String[] amogus = new String[]{"⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣤⣤⣤⣤⣤⣶⣦⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀",
                                        "⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⡿⠛⠉⠙⠛⠛⠛⠛⠻⢿⣿⣷⣤⡀⠀⠀⠀⠀⠀",
@@ -66,10 +65,21 @@ class Amogus extends Program {
         }
         reset();
     }
-    // void afficherTheme(QuestionImposteur selection){
-    //     // ┌ ─ │ ┐ └ ┘
-    //     println("\n\nLe thème de la question est : " + selection.theme);
-    // }
+    void afficherTheme(QuestionImposteur selection){
+        // ┌ ─ │ ┐ └ ┘
+        println("\n");
+        print("┌");
+        for (int i=0;i<30+length(selection.theme);i=i+1){
+            print("─");
+        }
+        println("┐");
+        println("│Le thème de la question est : "+ selection.theme +"│");
+        print("└");
+        for (int i=0;i<30+length(selection.theme);i=i+1){
+            print("─");
+        }
+        println("┘");
+    }
 
     void algorithm(){
         cp.clearTerminal();
@@ -86,6 +96,7 @@ class Amogus extends Program {
         
         QuestionImposteur selection = tirageQuestion(bddQuestion);
         afficherAmogus();
+        afficherTheme(selection);
         println("la personne A dit : " + selection.choix[0]);
         println("──────────────────────────────────────────────────────────────────");
         println("la personne B dit : " + selection.choix[1]);

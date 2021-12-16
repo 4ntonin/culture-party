@@ -2,9 +2,10 @@ import extensions.CSVFile;
 
 class CultureParty extends Program {
     final char VIDE = ' ';
-    final char BOOSTER = 'B';
-    final char RALENTISSEUR = 'R';
-    final char MINIJEU = 'J';
+    final char BOOSTER = '▶';
+    final char RALENTISSEUR = '㐅';
+    final char MINIJEU = '㐃';
+    // ➫★⚝➜➕➖❌✕✖✗✰🌐🌞🎲🎱🠞🡆＋₊⚡乛㐃㐅▶✘⛒◌✪
     Joueur joueur = new Joueur();
 
     QuestionVide[] qvides = creerQuestionsCasesVides();
@@ -58,6 +59,7 @@ class CultureParty extends Program {
     }
 
     void afficherMap(char[] map) {
+        println("Pièces : " + joueur.pieces);
         // ╔╗╚╝═║╦╩╠╣    = caractères utilisables pour la map
         // Exemple de Route 66:
         // ╔═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╗
@@ -88,18 +90,21 @@ class CultureParty extends Program {
         }
         println("║");
         // type de case ------------------------------------------
+        String completion;
         for (int i=0;i<len;i++) {
             print("║  ");
+            completion = "  ";
             if (map[i] == BOOSTER) {
                 text("green");
             } else if (map[i] == RALENTISSEUR) {
                 text("yellow");
+                completion = " ";
             } else if (map[i] == MINIJEU) {
                 text("blue");
+                completion = " ";
             }
-            print(map[i] + "");
+            print(map[i] + completion);
             reset();
-            print("  ");
         }
         println("║");
         // bas ---------------------------------------------------
@@ -132,15 +137,15 @@ class CultureParty extends Program {
 
     void affichageCaseActuelle(char[] map) {
         char caseactuelle = map[joueur.position];
-        print("\n\nVous êtes tombé sur une case ");
+        print("\n\nTu es tombé sur une case ");
         if (caseactuelle == BOOSTER) {
-            print("Booster!\nVous allez avancer d'un nombre de cases aléatoire et gagner des pièces!");
+            print("Booster!\nTu vas avancer d'un nombre de cases aléatoire et gagner des pièces !");
         } else if (caseactuelle == RALENTISSEUR) {
-            print("Ralentisseur...\nVous allez reculer d'un nombre de cases aléatoire.");
+            print("Ralentisseur...\nTu vas reculer d'un nombre de cases aléatoire.");
         } else if (caseactuelle == MINIJEU) {
-            print("Mini-Jeu!");
+            print("Mini-Jeu !");
         } else {
-            print("vide.\nVous devez répondre à une question pour gagner un point!");
+            print("vide.\nTu dois répondre à une question pour gagner un point !");
         }
         readString();
     }
@@ -183,29 +188,28 @@ class CultureParty extends Program {
     void eventQuestion() {
         println("\n\n");
         QuestionVide randomq = qvides[(int) (random() * length(qvides))];
-        println(randomq.question);
+        int taillequestion = length(randomq.choix);
+        print(randomq.question);
         println("\n");
-        for (char i='A';i<length(randomq.choix)+'A';i=(char) (i+1)) {
-            println(i + " : " + randomq.choix[i - 'A']);
+        for (char i='A';i<taillequestion+'A';i=(char) (i+1)) {
+            print(i + " : " + randomq.choix[i - 'A'] + "\n");
         }
         println();
-        char guess = ' ';
-        do {
-            try {
-                print("Entrez votre réponse : ");
-                guess = readChar();
-            } catch (Exception e) {
-                print("Erreur. ");
-            }
-        } while (guess < 'A' || guess > 'A' + length(randomq.choix));
+        String guessinput = " ";
+        if (taillequestion == 2) {
+            while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B")) guessinput = readString();
+        } else {
+            while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B") && !equals(toUpperCase(guessinput), "C") && !equals(toUpperCase(guessinput), "D")) guessinput = readString();
+        }
+        char guess = charAt(guessinput, 0); 
         if (guess == randomq.rep) {
             joueur.pieces++;
-            println("\nBonne réponse! Vous gagnez une pièce.");
-            println(randomq.explication);
-            println("\nVous avez maintenant " + joueur.pieces + " pièces!");
+            print("\nBonne réponse! Tu gagnes une pièce.\n");
+            print(randomq.explication);
+            print("\nTu as maintenant " + joueur.pieces + " pièces!");
         } else {
-            println("\nMauvaise réponse...");
-            println(randomq.explication);
+            print("\nMauvaise réponse...\n");
+            print(randomq.explication);
         }
         readString();
     }
@@ -219,7 +223,7 @@ class CultureParty extends Program {
         int len = length(s);
         for (int i=0;i<len;i++) {
             print(charAt(s, i));
-            delay(50);
+            delay(25);
         }
     }
 
@@ -240,8 +244,9 @@ class CultureParty extends Program {
         println("Sélectionne une taille de Carte.\n");
         for (int i=0;i<132/2-14;i++) print(" ");
         println("10     |     15     |     20");
-        int taillemap = 0;
-        while (taillemap != 10 && taillemap != 15 && taillemap != 20) taillemap = readInt();
+        String taillemapinput = "";
+        while (!equals(taillemapinput, "10") && !equals(taillemapinput, "15") && !equals(taillemapinput, "20")) taillemapinput = readString();
+        int taillemap = stringToInt(taillemapinput);
         char[] map = creerMapRoute66(taillemap);
         clearTerminal();
 
@@ -250,15 +255,17 @@ class CultureParty extends Program {
         println("Sélectionne le nombre de faces du dé\n");
         for (int i=0;i<132/2-8;i++) print(" ");
         println("3       |       6");
-        int taillede = 0, resde;
-        while (taillede != 3 && taillede != 6) taillede = readInt();
+        int resde;
+        String tailledeinput = "0";
+        while (!equals(tailledeinput, "3") && !equals(tailledeinput, "6")) tailledeinput = readString();
+        int taillede = stringToInt(tailledeinput);
         clearTerminal();
 
         print("\n\n\n");
         for (int i=0;i<132/2-14;i++) print(" ");
-        println("Voici quelques indications :\n\n");
+        println("Voici quelques indications :");
         for (int i=0;i<132/2-22;i++) print(" ");
-        println("____________________________________________");
+        println("____________________________________________\n\n");
         text("red");
         for (int i=0;i<132/2-7;i++) print(" ");
         print(joueur.nom);
@@ -297,11 +304,11 @@ class CultureParty extends Program {
             afficherMap(map);
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
-            println("Appuies sur Entrée pour lancer le dé");
+            print("Appuies sur Entrée pour lancer le dé");
             readString();
             print("\n\n");
             resde = lancerDe(taillede);
-            println("Tu as fait " + resde + " !");
+            print("Tu as fait " + resde + " !");
             readString();
             effectuerDeplacement(resde, map);
             affichageCaseActuelle(map);
@@ -312,8 +319,9 @@ class CultureParty extends Program {
                 afficherMap(map);
             }
         }
-        println("Bravo ! Tu as fini cette partie avec un total de " + joueur.pieces + " pièces !");
-
+        print("Bravo ! Tu as fini cette partie avec un total de " + joueur.pieces + " pièces !\n");
+        readString();
+        clearTerminal();
     }
 }
 

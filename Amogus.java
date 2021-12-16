@@ -108,7 +108,12 @@ class Amogus extends Program {
         println("Sélectionner votre réponse :");
 
         int piecesgagnees = 0;
-        char choix_joueur = readChar();
+        String choix_joueur_input = " ";
+        while (!equals(toUpperCase(choix_joueur_input), "A") && !equals(toUpperCase(choix_joueur_input), "B") && !equals(toUpperCase(choix_joueur_input), "C") && !equals(toUpperCase(choix_joueur_input), "D")) {
+            choix_joueur_input = readString();
+            choix_joueur_input = toUpperCase(choix_joueur_input);
+        }
+        char choix_joueur = charAt(choix_joueur_input, 0);
         if (equals(selection.choix[choix_joueur-'A'],selection.rep)){
             piecesgagnees = 2;
             println("Bien joué tu as trouvé l'imposteur!!!");

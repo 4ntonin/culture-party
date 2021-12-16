@@ -197,9 +197,15 @@ class CultureParty extends Program {
         println();
         String guessinput = " ";
         if (taillequestion == 2) {
-            while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B")) guessinput = readString();
+            while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B")) {
+                guessinput = readString();
+                guessinput = toUpperCase(guessinput);
+            }
         } else {
-            while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B") && !equals(toUpperCase(guessinput), "C") && !equals(toUpperCase(guessinput), "D")) guessinput = readString();
+            while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B") && !equals(toUpperCase(guessinput), "C") && !equals(toUpperCase(guessinput), "D")){
+                guessinput = readString();
+                guessinput = toUpperCase(guessinput);
+            }
         }
         char guess = charAt(guessinput, 0); 
         if (guess == randomq.rep) {

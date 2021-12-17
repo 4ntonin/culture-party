@@ -225,13 +225,13 @@ class CultureParty extends Program {
         System.out.flush();
     }
 
-    void afficherTexte(String s) {
-        int len = length(s);
-        for (int i=0;i<len;i++) {
-            print(charAt(s, i));
-            delay(25);
-        }
-    }
+    // void afficherTexte(String s) {
+    //     int len = length(s);
+    //     for (int i=0;i<len;i++) {
+    //         print(charAt(s, i));
+    //         delay(25);
+    //     }
+    // }
 
     void algorithm() {
 
@@ -330,5 +330,3 @@ class CultureParty extends Program {
         clearTerminal();
     }
 }
-
-// il faudra écrire des fonctions test

@@ -181,8 +181,14 @@ class CultureParty extends Program {
     }
 
     void eventMiniJeu() {
-        Amogus jeuamogus = new Amogus();
-        joueur.pieces += jeuamogus.lancerJeu();
+        int choix_jeu = (int)(random()*2);
+        if(choix_jeu == 1){
+            Amogus jeuamogus = new Amogus();
+            joueur.pieces += jeuamogus.lancerJeu();
+        }else{
+            Unolingo jeuunolingo = new Unolingo();
+            joueur.pieces += jeuunolingo.lancerJeu(); 
+        }
     }
 
     void eventQuestion() {

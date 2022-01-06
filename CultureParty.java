@@ -298,8 +298,10 @@ class CultureParty extends Program {
         print(MINIJEU + "");
         reset();
         println(" : Cette case lancera un mini-jeu aléatoire !\n");
-        for (int i=0;i<132/2-48;i++) print(" ");
+        for (int i=0;i<132/2-95/2;i++) print(" ");
         println("Quand tu tomberas sur une case vide, tu devras répondre à une question pour gagner des pièces !\n");
+        for (int i=0;i<132/2-105/2;i++) print(" ");
+        print("À tout moment dans la partie, avant de lancer le dé, tu peux sauvegarder ta progression en entrant \"SAVE\"");
         print("\n\n\n\n\n\n\n");
         // ┌ ─ │ ┐ └ ┘
         for (int i=0;i<132/2-21;i++) print(" ");
@@ -317,7 +319,10 @@ class CultureParty extends Program {
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
             print("Appuies sur Entrée pour lancer le dé");
-            readString();
+            String ecrit =readString();
+            if (equals(ecrit,"SAVE")){
+                void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
+            }
             print("\n\n");
             resde = lancerDe(taillede);
             print("Tu as fait " + resde + " !");

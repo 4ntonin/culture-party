@@ -10,4 +10,4 @@ Le jeu s'arrête quand le joueur arrive à la fin de la carte. S'il a battu un r
 
 Afin d'utiliser le projet, il vous faudra taper les commandes suivantes: <br>
 `./compile.sh` &rarr; Compilation des fichiers présents dans 'src' et création des fichiers '.class' dans 'classes' <br>
-`./run.sh HarryThmetik` &rarr; Lancement du jeu
+`./run.sh CultureParty` &rarr; Lancement du jeu

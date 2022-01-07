@@ -1,7 +1,5 @@
 # Culture Party
 
----
-
 ## Description
 
 Culture Party est un jeu éducatif où l'on se déplace sur un plateau. <br>

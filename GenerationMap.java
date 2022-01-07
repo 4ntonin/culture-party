@@ -10,14 +10,14 @@ class GenerationMap extends Program {
     Map carte = creerMap();
 
     Case creerCase(char type, char pos_prochain_voisin) {
-        Case casecreee = new Case;
+        Case casecreee = new Case();
         casecreee.type = type;
         casecreee.pos_prochain_voisin = pos_prochain_voisin;
         return casecreee;
     }
 
     Map creerMap() {
-        Map carte = new Map;
+        Map carte = new Map();
         char[] map_events = new char[carte.taille];
         for (int i=0;i<carte.taille;i++) {
             map_events[i] = VIDE;
@@ -37,10 +37,21 @@ class GenerationMap extends Program {
             }
         }
 
-        int random_pos_voisin;
+        int random_pos_voisin, last_random_pos = 2;
         char[] mapnextvoisins = new char[carte.taille];
-        for (int i=0;i<carte.taille;i++) {
+        mapnextvoisins[0] = DROITE;
+        for (int i=1;i<carte.taille-1;i++) {
             random_pos_voisin = (int) (random() * 3);
+            if (random_pos_voisin == 0 && mapnextvoisins[i-1] == HAUT) {
+                do {
+                    random_pos_voisin = (int) (random() * 3);
+                } while (random_pos_voisin == 0);
+            } else if (random_pos_voisin == 1 && mapnextvoisins[i-1] == BAS) {
+                do {
+                    random_pos_voisin = (int) (random() * 3);
+                } while (random_pos_voisin == 1);
+            }
+            last_random_pos = random_pos_voisin;
             if (i > 3 && (mapnextvoisins[i-3] == HAUT || mapnextvoisins[i-3] == BAS)) {
                 mapnextvoisins[i] = DROITE;
             } else if (random_pos_voisin == 0) {
@@ -59,6 +70,7 @@ class GenerationMap extends Program {
                 mapnextvoisins[i] = DROITE;
             }
         }
+        mapnextvoisins[carte.taille-1] = DROITE;
 
         for (int i=0;i<carte.taille;i++) {
             carte.cases[i] = creerCase(map_events[i], mapnextvoisins[i]);
@@ -67,14 +79,14 @@ class GenerationMap extends Program {
         return carte;
     }
 
-    boolean isOutOfRange(int position, char searchedmove, Map[] carte) {
-        boolean autrecase = false;
+    boolean isOutOfRange(int position, char searchedmove, Map carte) {
         int nbmoves = 0;
-        while (!autrecase && nbmoves < 2 && position >= 0) {
-            if (carte[position - 1] == searchedmove) {
+        while (nbmoves < 2 && position > 1) {
+            println(carte.cases[0].pos_prochain_voisin + "");
+            if (carte.cases[position - 1].pos_prochain_voisin == searchedmove) {
                 nbmoves++;
-            } else if (carte[position - 1] != DROITE) {
-                autrecase = true;
+            } else if (carte.cases[position - 1].pos_prochain_voisin != DROITE) {
+                nbmoves--;
             }
             position--;
         }
@@ -85,39 +97,103 @@ class GenerationMap extends Program {
         }
     }
 
+    // String tableToString(String[] table) {
+    //     String res = "";
+    //     for (int i=0;i<4;i++) {
+    //         res += table[i] + "\n";
+    //     }
+    //     return res;
+    // }
+
     void afficherMap() {
-        // ╔╗╚╝═║╦╩╠╣    = caractères utilisables pour la map
-        String[][] printablemap = new String[10][151];
+        // ╔╗╚╝═║╦╩╠╣╬    = caractères utilisables pour la map
+        String[][] printablemap = new String[10][25];
         final String LIGNEVIDE = "       ";
         for (int i=0;i<length(printablemap, 1);i++) {
             for (int j=0;j<length(printablemap, 2);j++) {
                 printablemap[i][j] = LIGNEVIDE;
             }
         }
-        final String NEXTCASEBAS = "╔═════╗\n║     ║\n║     ║\n╠═════╣\n";
-        final String NEXTCASEHAUT = "╠═════╣\n║     ║\n║     ║\n╚═════╝\n";
-        final String NEXTCASEDROITE = "╔═════╦\n║     ║\n║     ║\n╚═════╩\n";
+        String[] printableCase;
         int posx = 0;
         int posy = 0;
 
-        for (int i=0;i<carte.taille;i++) {
+
+        printableCase = new String[]{"╔═════╗","║     ║","║     ║","╚═════╝"};
+        if (carte.cases[1].pos_prochain_voisin == BAS) {
+            printableCase[3] = "╚═════╬";
+        } else if (carte.cases[1].pos_prochain_voisin == HAUT) {
+            printableCase[0] = "╔═════╬";
+        } else {
+            printableCase[0] = "╔═════╦";
+            printableCase[3] = "╚═════╩";
+        }
+        for (int i=0;i<4;i++) {
+            printablemap[posx+i][posy] = printableCase[i];
+        }
+        posy += 1;
+
+
+        for (int i=1;i<carte.taille-1;i++) {
+            printableCase = new String[]{"╔═════╗","║     ║","║     ║","╚═════╝"};
             if (carte.cases[i].pos_prochain_voisin == HAUT) {
-                printablemap[x][y] = NEXTCASEHAUT;
-                x -= 1;
+                if (carte.cases[i+1].pos_prochain_voisin == HAUT) {
+                    printableCase[0] = "╠═════╣";
+                } else if (carte.cases[i+1].pos_prochain_voisin == DROITE) {
+                    printableCase[0] = "╠═════╬";
+                }
+                for (int j=0;j<4;j++) {
+                    printablemap[posx+j][posy] = printableCase[j];
+                }
+                posx -= 1;
             } else if (carte.cases[i].pos_prochain_voisin == BAS) {
-                printablemap[x][y] = NEXTCASEBAS;
-                x += 1;
+                if (carte.cases[i+1].pos_prochain_voisin == BAS) {
+                    printableCase[3] = "╠═════╣";
+                } else if (carte.cases[i+1].pos_prochain_voisin == DROITE) {
+                    printableCase[3] = "╠═════╬";
+                }
+                for (int j=0;j<4;j++) {
+                    printablemap[posx+j][posy] = printableCase[j];
+                }
+                posx += 1;
             } else {
-                printablemap[x][y] = NEXTCASEDROITE;
-                y += 1;
+                if (carte.cases[i+1].pos_prochain_voisin == BAS) {
+                    printableCase[3] = "╚═════╬";
+                } else if (carte.cases[i+1].pos_prochain_voisin == HAUT) {
+                    printableCase[0] = "╔═════╬";
+                } else {
+                    printableCase[0] = "╔═════╦";
+                    printableCase[3] = "╚═════╩";
+                }
+                for (int j=0;j<4;j++) {
+                    printablemap[posx+j][posy] = printableCase[j];
+                }
+                posy += 1;
+            }
+            if (carte.cases[i-1].pos_prochain_voisin == HAUT) {
+                printableCase[3] = "";
+            } else if (carte.cases[i-1].pos_prochain_voisin == BAS) {
+                printableCase[0] = "";
+            } else {
+                printableCase[0] = substring(printableCase[0], 1, length(printableCase[0]));
+                printableCase[1] = substring(printableCase[1], 1, length(printableCase[1]));
+                printableCase[2] = substring(printableCase[2], 1, length(printableCase[2]));
+                printableCase[3] = substring(printableCase[3], 1, length(printableCase[3]));
             }
         }
 
+
+        printableCase = new String[]{"═════╗","     ║","     ║","═════╝"};
+        for (int i=0;i<4;i++) {
+            printablemap[posx+i][posy] = printableCase[i];
+        }
+
+
         for (int i=0;i<length(printablemap, 1);i++) {
             for (int j=0;j<length(printablemap, 2);j++) {
-                print(printablemap[j]);
+                print(printablemap[i][j]);
             }
-            println()
+            println();
         }
     }
 

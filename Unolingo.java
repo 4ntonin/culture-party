@@ -38,24 +38,6 @@ class Unolingo extends Program {
         println("┘");
     }
 
-    String toMin(String chaine){
-        int ecart = 'A' - 'a';
-        String result = "";
-        for (int i =0;i<length(chaine);i=i+1){
-            if ('A' <= charAt(chaine,i) && charAt(chaine,i) <= 'Z' ){
-                result =result + (char)(charAt(chaine,i) - ecart);
-            }else {
-                result =result + charAt(chaine,i);
-            }
-        }
-        return result;
-    }
-
-    void testToMin(){
-        assertEquals("avec",toMin("AVEC"));
-        assertEquals("avec",toMin("AvEc"));
-    }
-
     int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
@@ -74,8 +56,8 @@ class Unolingo extends Program {
         println("Entrer la réponse :");
         int piecesgagnees = 0;
         String choix_joueur_input = "";
-        choix_joueur_input = toMin(choix_joueur_input); 
         choix_joueur_input = readString();
+        choix_joueur_input = toLowerCase(choix_joueur_input); 
         if (equals(selection.traduction,choix_joueur_input)){
             piecesgagnees = 2;
             println("Bien joué tu as trouvé la bonne traduction!!!");

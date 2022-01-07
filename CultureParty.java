@@ -181,13 +181,17 @@ class CultureParty extends Program {
     }
 
     void eventMiniJeu() {
-        int choix_jeu = (int)(random()*2);
-        if(choix_jeu == 1){
+        int choix_jeu = (int)(random()*3);
+        if(choix_jeu == 0){
             Amogus jeuamogus = new Amogus();
             joueur.pieces += jeuamogus.lancerJeu();
-        }else{
+        }else if(choix_jeu == 1){
             Unolingo jeuunolingo = new Unolingo();
             joueur.pieces += jeuunolingo.lancerJeu(); 
+        }else{
+            JeuGrammaire jeugrammaire = new JeuGrammaire();
+            joueur.pieces += jeugrammaire.lancerJeu(); 
+
         }
     }
 
@@ -320,9 +324,9 @@ class CultureParty extends Program {
             print("\n\n\n");
             print("Appuies sur Entrée pour lancer le dé");
             String ecrit =readString();
-            if (equals(ecrit,"SAVE")){
-                void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
-            }
+            // if (equals(ecrit,"SAVE")){
+            //     void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
+            // }
             print("\n\n");
             resde = lancerDe(taillede);
             print("Tu as fait " + resde + " !");

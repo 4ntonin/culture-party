@@ -7,6 +7,7 @@ class CultureParty extends Program {
     final char MINIJEU = '㐃';
     // ➫★⚝➜➕➖❌✕✖✗✰🌐🌞🎲🎱🠞🡆＋₊⚡乛㐃㐅▶✘⛒◌✪
     Joueur joueur = new Joueur();
+    GenerationMap fonctionsMap = new GenerationMap();
 
     QuestionVide[] qvides = creerQuestionsCasesVides();
 
@@ -36,107 +37,30 @@ class CultureParty extends Program {
         return bdd;
     }
 
-    char[] creerMapRoute66(int taille) {
-        char[] map = new char[taille];
-        for (int i=0;i<taille;i++) {
-            map[i] = VIDE;
-        }
-        int randompos;
-        int nbevents = taille / 2; // on laisse moitié de cases vide et on divise en parts égales pour les events
-        for (int i=0;i<nbevents;i++) {
-            do {
-                randompos = (int) (random() * (taille - 2) + 1);
-            } while (map[randompos] != VIDE);
-            if (i%4 == 0) {
-                map[randompos] = BOOSTER;
-            } else if (i%4 == 1) {
-                map[randompos] = RALENTISSEUR;
-            } else {
-                map[randompos] = MINIJEU;
-            }
-        }
-        return map;
-    }
-
-    void afficherMap(char[] map) {
-        println("Pièces : " + joueur.pieces);
-        // ╔╗╚╝═║╦╩╠╣    = caractères utilisables pour la map
-        // Exemple de Route 66:
-        // ╔═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╦═════╗
-        // ║     ║     ║     ║     ║     ║     ║     ║     ║     ║     ║
-        // ║     ║     ║     ║     ║     ║     ║     ║     ║     ║     ║
-        // ╚═════╩═════╩═════╩═════╩═════╩═════╩═════╩═════╩═════╩═════╝
-
-        int len = length(map);
-        // utilisation de boucles for pour pouvoir gérer l'affichage du type de case et du joueur
-        println("\n");
-        // haut -------------------------------------------------- 
-        print("╔═════");
-        for (int i=1;i<len;i++) {
-            print("╦═════");
-        }
-        println("╗");
-        // joueur ------------------------------------------------
-        for (int i=0;i<len;i++) {
-            if (i == joueur.position) {
-                print("║  ");
-                text("red");
-                print(joueur.nom);
-                reset();
-                print("  ");
-            } else {
-                print("║     ");
-            }
-        }
-        println("║");
-        // type de case ------------------------------------------
-        String completion;
-        for (int i=0;i<len;i++) {
-            print("║  ");
-            completion = "  ";
-            if (map[i] == BOOSTER) {
-                text("green");
-            } else if (map[i] == RALENTISSEUR) {
-                text("yellow");
-                completion = " ";
-            } else if (map[i] == MINIJEU) {
-                text("blue");
-                completion = " ";
-            }
-            print(map[i] + completion);
-            reset();
-        }
-        println("║");
-        // bas ---------------------------------------------------
-        print("╚═════");
-        for (int i=1;i<len;i++) {
-            print("╩═════");
-        }
-        println("╝");
-    }
-
     int lancerDe(int taille) {
         return (int) (random() * taille + 1);
     }
 
-    void effectuerDeplacement(int deplacement, char[] map) {
-        int i = 0, plus = 1, taillemap = length(map);
+    void effectuerDeplacement(int deplacement, Map map) {
+        int i = 0, plus = 1;
         if (deplacement < 0) {
             plus = -1;
             deplacement = abs(deplacement);
         }
-        while (i < deplacement && joueur.position < taillemap-1) {
+        while (i < deplacement && joueur.position < map.taille-1) {
             joueur.position += plus;
             i++;
             clearTerminal();
-            afficherMap(map);
+            println("\nPièces : " + joueur.pieces + "\n");
+            fonctionsMap.joueur = joueur;
+            fonctionsMap.afficherMap(map);
             delay(500);
         }
         if (joueur.position < 0) joueur.position = 0;
     }
 
-    void affichageCaseActuelle(char[] map) {
-        char caseactuelle = map[joueur.position];
+    void affichageCaseActuelle(Map map) {
+        char caseactuelle = map.cases[joueur.position].type;
         print("\n\nTu es tombé sur une case ");
         if (caseactuelle == BOOSTER) {
             print("Booster!\nTu vas avancer d'un nombre de cases aléatoire et gagner des pièces !");
@@ -150,8 +74,8 @@ class CultureParty extends Program {
         readString();
     }
 
-    void lancerEvent(char[] map) {
-        char caseactuelle = map[joueur.position];
+    void lancerEvent(Map map) {
+        char caseactuelle = map.cases[joueur.position].type;
         if (caseactuelle == BOOSTER) {
             eventBooster(map);
         } else if (caseactuelle == RALENTISSEUR) {
@@ -163,7 +87,7 @@ class CultureParty extends Program {
         }
     }
 
-    void eventBooster(char[] map) {
+    void eventBooster(Map map) {
         // dé ?
         int randint = (int) (random() * 3 + 1);
         joueur.pieces += randint;
@@ -172,7 +96,7 @@ class CultureParty extends Program {
         lancerEvent(map);
     }
 
-    void eventRalentisseur(char[] map) {
+    void eventRalentisseur(Map map) {
         // dé ?
         int randint = (int) (random() * 3 - 4);
         effectuerDeplacement(randint, map);
@@ -247,35 +171,27 @@ class CultureParty extends Program {
 
         // PARAMETRAGE
         clearTerminal();
-        print("\n\n\n");
+        print("\n\n\n\n\n");
         for (int i=0;i<132/2-13;i++) print(" ");
         println("══════════════════════════");
         for (int i=0;i<132/2-14;i++) print(" ");
         println("Bienvenue dans Culture Party");
         for (int i=0;i<132/2-13;i++) print(" ");
         println("══════════════════════════");
-        print("\n\n\n");
+        print("\n\n\n\n\n");
+        for (int i=0;i<132/2-20;i++) print(" ");
+        println("┌─────────────────────────────────────┐");
+        for (int i=0;i<132/2-20;i++) print(" ");
+        println("│          Appuie sur Entrée          │");
+        for (int i=0;i<132/2-20;i++) print(" ");
+        println("└─────────────────────────────────────┘");
+        readString();
 
-        for (int i=0;i<132/2-16;i++) print(" ");
-        println("Sélectionne une taille de Carte.\n");
-        for (int i=0;i<132/2-14;i++) print(" ");
-        println("10     |     15     |     20");
-        String taillemapinput = "";
-        while (!equals(taillemapinput, "10") && !equals(taillemapinput, "15") && !equals(taillemapinput, "20")) taillemapinput = readString();
-        int taillemap = stringToInt(taillemapinput);
-        char[] map = creerMapRoute66(taillemap);
+        Map map = fonctionsMap.creerMap();
         clearTerminal();
 
-        print("\n\n\n");
-        for (int i=0;i<132/2-18;i++) print(" ");
-        println("Sélectionne le nombre de faces du dé\n");
-        for (int i=0;i<132/2-8;i++) print(" ");
-        println("3       |       6");
         int resde;
-        String tailledeinput = "0";
-        while (!equals(tailledeinput, "3") && !equals(tailledeinput, "6")) tailledeinput = readString();
-        int taillede = stringToInt(tailledeinput);
-        clearTerminal();
+        fonctionsMap.joueur = joueur;
 
         print("\n\n\n");
         for (int i=0;i<132/2-14;i++) print(" ");
@@ -308,18 +224,20 @@ class CultureParty extends Program {
         print("À tout moment dans la partie, avant de lancer le dé, tu peux sauvegarder ta progression en entrant \"SAVE\"");
         print("\n\n\n\n\n\n\n");
         // ┌ ─ │ ┐ └ ┘
-        for (int i=0;i<132/2-21;i++) print(" ");
-        println("┌───────────────────────────────────────┐");
-        for (int i=0;i<132/2-21;i++) print(" ");
-        println("│ Appuies sur Entrée pour lancer le jeu │");
-        for (int i=0;i<132/2-21;i++) print(" ");
-        println("└───────────────────────────────────────┘");
+        for (int i=0;i<132/2-20;i++) print(" ");
+        println("┌──────────────────────────────────────┐");
+        for (int i=0;i<132/2-20;i++) print(" ");
+        println("│ Appuie sur Entrée pour lancer le jeu │");
+        for (int i=0;i<132/2-20;i++) print(" ");
+        println("└──────────────────────────────────────┘");
         readString();
 
         // JEU
-        while (joueur.position < taillemap - 1) {
+        while (joueur.position < map.taille - 1) {
             clearTerminal();
-            afficherMap(map);
+            println("\nPièces : " + joueur.pieces + "\n");
+            fonctionsMap.joueur = joueur;
+            fonctionsMap.afficherMap(map);
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
             print("Appuies sur Entrée pour lancer le dé");
@@ -329,16 +247,18 @@ class CultureParty extends Program {
             //     void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
             // }
             print("\n\n");
-            resde = lancerDe(taillede);
+            resde = lancerDe(6);
             print("Tu as fait " + resde + " !");
             readString();
             effectuerDeplacement(resde, map);
             affichageCaseActuelle(map);
             lancerEvent(map);
             print("\n\n");
-            if (map[joueur.position] != VIDE) {
+            if (map.cases[joueur.position].type != VIDE) {
                 clearTerminal();
-                afficherMap(map);
+                println("\nPièces : " + joueur.pieces + "\n");
+                fonctionsMap.joueur = joueur;
+                fonctionsMap.afficherMap(map);
             }
         }
         print("Bravo ! Tu as fini cette partie avec un total de " + joueur.pieces + " pièces !\n");

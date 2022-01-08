@@ -6,16 +6,7 @@ class GenerationMap extends Program {
     final char HAUT = 'h';
     final char BAS = 'b';
     final char DROITE = 'd';
-
-
-    String tableToString(char[] table) {
-        String res = "";
-        for (int i=0;i<length(table);i++) {
-            res += "[" + table[i] + "],";
-        }
-        return res;
-    }
-
+    Joueur joueur;
 
     Case creerCase(char type, char direction) {
         Case casecreee = new Case();
@@ -94,7 +85,7 @@ class GenerationMap extends Program {
         return map;
     }
 
-    String[] gestionBordures(Map map, String[] printablecase, int i) {
+    void gestionBordures(Map map, String[] printablecase, int i) {
         if (map.cases[i-1].direction == HAUT) {
             if (map.cases[i-2].direction == DROITE) {
                 if (map.cases[i].direction == DROITE) {
@@ -129,10 +120,9 @@ class GenerationMap extends Program {
             printablecase[2] = substring(printablecase[2], 1, length(printablecase[2]));
             printablecase[3] = substring(printablecase[3], 1, length(printablecase[3]));
         }
-        return printablecase;
     }
 
-    String[][] ajoutPrintableCaseAMap(String[][] printablemap, String[] printablecase, int posx, int posy) {
+    void ajoutPrintableCaseAMap(String[][] printablemap, String[] printablecase, int posx, int posy) {
         if (posx == 0) {
             for (int j=0;j<4;j++) {
                 printablemap[posx+j][posy] = printablecase[j];
@@ -146,10 +136,9 @@ class GenerationMap extends Program {
                 printablemap[4+posx+j][posy] = printablecase[j];
             }
         }
-        return printablemap;
     }
 
-    String[][] gestionEspacesEnTrop(String[][] printablemap, int posx, int posy) {
+    void gestionEspacesEnTrop(String[][] printablemap, int posx, int posy) {
         if (posx == 0) {
             printablemap[4][posy] = substring(printablemap[4][posy], 1, length(printablemap[4][posy]));
             printablemap[5][posy] = substring(printablemap[5][posy], 1, length(printablemap[5][posy]));
@@ -174,11 +163,24 @@ class GenerationMap extends Program {
             printablemap[5][posy] = substring(printablemap[5][posy], 1, length(printablemap[5][posy]));
             printablemap[6][posy] = substring(printablemap[6][posy], 1, length(printablemap[6][posy]));
         }
-        return printablemap;
+    }
+
+    void affichageJoueur(String[] printablecase, int i) {
+        if (joueur.position == i) {
+            printablecase[1] = substring(printablecase[1], 0, 3) + joueur.nom + substring(printablecase[1], 4, 7);
+        }
+    }
+
+    void affichageType(Map map, String[] printablecase, int i) {
+        if (map.cases[i].type == MINIJEU || map.cases[i].type == RALENTISSEUR) {
+            printablecase[2] = substring(printablecase[2], 0, 3) + map.cases[i].type + substring(printablecase[2], 5, 7);
+        } else {
+            printablecase[2] = substring(printablecase[2], 0, 3) + map.cases[i].type + substring(printablecase[2], 4, 7);
+        }
     }
 
     void afficherMap(Map map) {
-        // ╔╗╚╝═║╦╩╠╣╬  ╢╤╧  ┄┆  ─━│┃┏┓┗┛┠┨┷┯╃╄╅╆  ─│┌┐└┘├┤┬┴┼    = caractères utilisables pour la map
+        // ─│┌┐└┘├┤┬┴┼    = caractères utilisables pour la map
         String[][] printablemap = new String[10][25];
         final String LIGNEVIDE = "       ";
         for (int i=0;i<length(printablemap, 1);i++) {
@@ -198,6 +200,7 @@ class GenerationMap extends Program {
             printablecase[0] = "┌─────┬";
             printablecase[3] = "└─────┴";
         }
+        affichageJoueur(printablecase, 0);
         for (int i=0;i<4;i++) {
             printablemap[posx+i][posy] = printablecase[i];
         }
@@ -212,8 +215,10 @@ class GenerationMap extends Program {
                     printablecase[0] = "├─────┼";
                     printablecase[3] = "├─────┘";
                 }
-                printablecase = gestionBordures(map, printablecase, i);
-                printablemap = ajoutPrintableCaseAMap(printablemap, printablecase, posx, posy);
+                affichageJoueur(printablecase, i);
+                affichageType(map, printablecase, i);
+                gestionBordures(map, printablecase, i);
+                ajoutPrintableCaseAMap(printablemap, printablecase, posx, posy);
                 posx -= 1;
             } else if (map.cases[i].direction == BAS) {
                 if (map.cases[i+1].direction == BAS) {
@@ -222,8 +227,10 @@ class GenerationMap extends Program {
                     printablecase[0] = "├─────┐";
                     printablecase[3] = "├─────┼";
                 }
-                printablecase = gestionBordures(map, printablecase, i);
-                printablemap = ajoutPrintableCaseAMap(printablemap, printablecase, posx, posy);
+                affichageJoueur(printablecase, i);
+                affichageType(map, printablecase, i);
+                gestionBordures(map, printablecase, i);
+                ajoutPrintableCaseAMap(printablemap, printablecase, posx, posy);
                 posx += 1;
             } else {
                 if (map.cases[i+1].direction == BAS) {
@@ -236,14 +243,16 @@ class GenerationMap extends Program {
                     printablecase[0] = "┌─────┬";
                     printablecase[3] = "└─────┴";
                 }
-                printablecase = gestionBordures(map, printablecase, i);
+                affichageJoueur(printablecase, i);
+                affichageType(map, printablecase, i);
+                gestionBordures(map, printablecase, i);
                 if (map.cases[i-1].direction == DROITE) {
-                    printablemap = gestionEspacesEnTrop(printablemap, posx, posy);
+                    gestionEspacesEnTrop(printablemap, posx, posy);
                     if (map.cases[i+1].direction != DROITE) {
-                        printablemap = gestionEspacesEnTrop(printablemap, posx, posy);
+                        gestionEspacesEnTrop(printablemap, posx, posy);
                     }
                 }
-                printablemap = ajoutPrintableCaseAMap(printablemap, printablecase, posx, posy);
+                ajoutPrintableCaseAMap(printablemap, printablecase, posx, posy);
                 posy += 1;
             }
         }
@@ -260,17 +269,36 @@ class GenerationMap extends Program {
             }
         }
 
-
+        int lenligne;
         for (int i=0;i<length(printablemap, 1);i++) {
+            print("       ");
             for (int j=0;j<length(printablemap, 2);j++) {
-                print(printablemap[i][j]);
+                lenligne = length(printablemap[i][j]);
+                if (i == 1 || i == 4 || i == 7) {
+                    print(substring(printablemap[i][j], 0, 2));
+                    if (charAt(printablemap[i][j], 2) == joueur.nom || charAt(printablemap[i][j], 3) == joueur.nom) {
+                        text("red");
+                    }
+                    print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));
+                    reset();
+                    print(substring(printablemap[i][j], 4, length(printablemap[i][j])));
+                } else if (i == 2 || i == 5 || i == 8) {
+                    print(substring(printablemap[i][j], 0, 2));
+                    if (charAt(printablemap[i][j], 2) == BOOSTER || charAt(printablemap[i][j], 3) == BOOSTER) {
+                        text("green");
+                    } else if (charAt(printablemap[i][j], 2) == RALENTISSEUR || charAt(printablemap[i][j], 3) == RALENTISSEUR) {
+                        text("yellow");
+                    } else if (charAt(printablemap[i][j], 2) == MINIJEU || charAt(printablemap[i][j], 3) == MINIJEU) {
+                        text("blue");
+                    }
+                    print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));
+                    reset();
+                    print(substring(printablemap[i][j], 4, length(printablemap[i][j])));
+                } else {
+                    print(printablemap[i][j]);
+                }
             }
             println();
         }
-    }
-
-    void algorithm() {
-        Map map = creerMap();
-        afficherMap(map);
     }
 }

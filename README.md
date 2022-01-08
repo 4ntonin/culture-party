@@ -9,10 +9,11 @@ Le jeu s'arrête quand le joueur arrive à la fin de la carte. S'il a battu un r
 ## Comment lancer le jeu
 
 Afin d'utiliser le projet, il vous faudra taper les commandes suivantes: <br>
-`./compile.sh` &rarr; Compilation des fichiers présents dans "*src*" et création des fichiers "*.class*" dans "*classes*" <br>
-`./run.sh CultureParty` &rarr; Lancement du jeu
+`./compile.sh` &rarr; *Compilation des fichiers présents dans "**src**" et création des fichiers "**.class**" dans "**classes**"* <br>
+`./run.sh CultureParty` &rarr; *Lancement du jeu*
 
 ## Informations supplémentaires
 
-Des captures d'écrans sont disponibles dans le dossier "*shots*".
-À tout moment dans la partie, vous pouvez taper "SAVE" pour sauvegarder la partie en cours.  
+Des captures d'écrans sont disponibles dans le dossier "*shots*". <br>
+À tout moment dans la partie, vous pouvez taper "SAVE" pour sauvegarder la partie en cours. <br>
+> Culture Party n'est jouable que sur un système Linux.

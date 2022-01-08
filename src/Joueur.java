@@ -1,5 +1,5 @@
 class Joueur {
     int position = 0;
-    static char nom = '⬤';
+    char nom = '⬤';
     int pieces = 0;
 }

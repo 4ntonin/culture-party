@@ -37,7 +37,7 @@ class GenerationMap extends Program {
             }
         }
 
-        int random_pos_voisin, last_random_pos = 2;
+        int random_pos_voisin;
         char[] mapnextvoisins = new char[carte.taille];
         mapnextvoisins[0] = DROITE;
         for (int i=1;i<carte.taille-1;i++) {
@@ -51,7 +51,6 @@ class GenerationMap extends Program {
                     random_pos_voisin = (int) (random() * 3);
                 } while (random_pos_voisin == 1);
             }
-            last_random_pos = random_pos_voisin;
             if (i > 3 && (mapnextvoisins[i-3] == HAUT || mapnextvoisins[i-3] == BAS)) {
                 mapnextvoisins[i] = DROITE;
             } else if (random_pos_voisin == 0) {

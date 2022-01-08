@@ -323,7 +323,8 @@ class CultureParty extends Program {
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
             print("Appuies sur Entrée pour lancer le dé");
-            String ecrit =readString();
+            readString();
+            // String ecrit =readString();
             // if (equals(ecrit,"SAVE")){
             //     void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
             // }

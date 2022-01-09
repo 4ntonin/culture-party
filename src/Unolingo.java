@@ -25,47 +25,49 @@ class Unolingo extends Program {
     void afficherQuestion(QuestionLingo selection){
         // ┌ ─ │ ┐ └ ┘
         println("\n");
-        print("┌");
+        String s = "";
+        s += "┌";
         for (int i=0;i<22+length(selection.traduire);i=i+1){
-            print("─");
+            s += "─";
         }
-        println("┐");
-        println("│Vous devez traduire : "+ selection.traduire +"│");
-        print("└");
+        s += "┐";
+        cp.afficherTexte(s);
+        cp.afficherTexte("│Vous devez traduire : "+ selection.traduire +"│");
+        s = "";
+        s += "└";
         for (int i=0;i<22+length(selection.traduire);i=i+1){
-            print("─");
+            s += "─";
         }
-        println("┘");
+        s += "┘";
+        cp.afficherTexte(s);
     }
 
     int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
-        for(int i=0;i<(132/2-8/2);i=i+1) print(" ");
-        println("Unolingo");
+        cp.afficherTexte("Unolingo");
         print("\n\n");
-        for(int i=0;i<(132/2-70/2);i=i+1) print(" ");
-        println("les règles : un mot te sera donné, il suffit d'y entrer la traduction.");
-        for(int i=0;i<(132/2-53/2);i=i+1) print(" ");
-        println("Pour passer au jeu, appuye sur une touche.");
+        cp.afficherTexte("Les règles : un mot en anglais te sera donné, il suffit d'y entrer la traduction en français.");
+        cp.afficherTexte("Pour passer au jeu, appuie sur Entrée.");
         readString();
         cp.clearTerminal();
 
+        int piecesgagnees = 0;
         QuestionLingo selection = tirageQuestion(bddQuestion);
         afficherQuestion(selection);
-        println("Entrer la réponse :");
-        int piecesgagnees = 0;
+        cp.afficherTexte("Entrer la réponse :");
+        for (int i=0;i<190/2-2;i++) print(" ");
         String choix_joueur_input = "";
         choix_joueur_input = readString();
         choix_joueur_input = toLowerCase(choix_joueur_input); 
         if (equals(selection.traduction,choix_joueur_input)){
             piecesgagnees = 2;
-            println("Bien joué tu as trouvé la bonne traduction!!!");
-            println("Tu gagnes 2 pièces.");
+            cp.afficherTexte("Bien joué ! Tu as trouvé la bonne traduction !");
+            cp.afficherTexte("Tu gagnes 2 pièces.");
         }else{
             piecesgagnees = -1;
-            println("Dommage c'est une mauvaise réponse.");
-            println("Tu perds 1 pièce.");  
+            cp.afficherTexte("Dommage, c'est une mauvaise réponse.");
+            cp.afficherTexte("Tu perds 1 pièce.");  
         }
         readString();
         return piecesgagnees;   

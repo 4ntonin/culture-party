@@ -47,8 +47,9 @@ class Amogus extends Program {
                                        "⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀",
                                        "⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀",
                                        "⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"};
-        println("A:                                 B:                              C:                              D:");
+        println("                                   A:                              B:                              C:                              D:");
         for(int i =0;i<length(amogus);i=i+1){
+            print("                                   ");
             for(int j = 0; j<4;j=j+1){
                 if(j==0){
                     text("red");
@@ -68,60 +69,62 @@ class Amogus extends Program {
     void afficherTheme(QuestionImposteur selection){
         // ┌ ─ │ ┐ └ ┘
         println("\n");
-        print("┌");
-        for (int i=0;i<30+length(selection.theme);i=i+1){
-            print("─");
+        String s = "";
+        s += "┌";
+        for (int i=0;i<34+length(selection.theme);i=i+1){
+            s += "─";
         }
-        println("┐");
-        println("│Le thème de la question est : "+ selection.theme +"│");
-        print("└");
-        for (int i=0;i<30+length(selection.theme);i=i+1){
-            print("─");
+        s += "┐";
+        cp.afficherTexte(s);
+        cp.afficherTexte("│  Le thème de la question est : " + selection.theme + "  │");
+        s = "";
+        s += "└";
+        for (int i=0;i<34+length(selection.theme);i=i+1){
+            s += "─";
         }
-        println("┘");
+        s += "┘";
+        cp.afficherTexte(s);
     }
 
     int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
-        for(int i=0;i<(132/2-21/2);i=i+1) print(" ");
-        println("Le jeu de l'imposteur");
-        print("\n\n");
-        for(int i=0;i<(132/2-98/2);i=i+1) print(" ");
-        println("les règles : un thème sera donné, parmi les réponses que vous donne les personnes, une est fausse.");
-        for(int i=0;i<(132/2-53/2);i=i+1) print(" ");
-        println("Votre mission si vous l'acceptez: trouver l'imposteur");
+        cp.afficherTexte("Le jeu de l'imposteur");
+        print("\n\n\n");
+        cp.afficherTexte("Les règles : un thème sera donné, parmi les réponses que vous donne les personnes, une est fausse.");
+        cp.afficherTexte("Votre mission si vous l'acceptez : Trouver l'imposteur.");
         readString();
         cp.clearTerminal();
         
+        int piecesgagnees = 0;
         QuestionImposteur selection = tirageQuestion(bddQuestion);
         afficherAmogus();
         afficherTheme(selection);
-        println("la personne A dit : " + selection.choix[0]);
-        println("──────────────────────────────────────────────────────────────────");
-        println("la personne B dit : " + selection.choix[1]);
-        println("──────────────────────────────────────────────────────────────────");
-        println("la personne C dit : " + selection.choix[2]);
-        println("──────────────────────────────────────────────────────────────────");
-        println("la personne D dit : " + selection.choix[3]);
-        println("──────────────────────────────────────────────────────────────────");
-        println("Sélectionner votre réponse :");
+        cp.afficherTexte("La personne A dit : " + selection.choix[0]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("La personne B dit : " + selection.choix[1]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("La personne C dit : " + selection.choix[2]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("La personne D dit : " + selection.choix[3]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("Sélectionnez votre réponse :");
 
-        int piecesgagnees = 0;
         String choix_joueur_input = " ";
         while (!equals(toUpperCase(choix_joueur_input), "A") && !equals(toUpperCase(choix_joueur_input), "B") && !equals(toUpperCase(choix_joueur_input), "C") && !equals(toUpperCase(choix_joueur_input), "D")) {
+            for (int i=0;i<190/2;i++) print(" ");
             choix_joueur_input = readString();
             choix_joueur_input = toUpperCase(choix_joueur_input);
         }
         char choix_joueur = charAt(choix_joueur_input, 0);
         if (equals(selection.choix[choix_joueur-'A'],selection.rep)){
             piecesgagnees = 2;
-            println("Bien joué tu as trouvé l'imposteur!!!");
-            println("Tu gagnes 2 pièces.");
+            cp.afficherTexte("Bien joué ! Tu as trouvé l'imposteur !");
+            cp.afficherTexte("Tu gagnes 2 pièces.");
         }else{
             piecesgagnees = -1;
-            println("Dommage c'est une mauvaise réponse.");
-            println("Tu perds 1 pièce.");  
+            cp.afficherTexte("Dommage, c'est une mauvaise réponse.");
+            cp.afficherTexte("Tu perds 1 pièce.");  
         }
         readString();
         return piecesgagnees;

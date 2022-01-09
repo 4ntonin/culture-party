@@ -167,7 +167,7 @@ class GenerationMap extends Program {
 
     void affichageJoueur(String[] printablecase, int i) {
         if (joueur.position == i) {
-            printablecase[1] = substring(printablecase[1], 0, 3) + joueur.nom + substring(printablecase[1], 4, 7);
+            printablecase[1] = substring(printablecase[1], 0, 3) + joueur.nom + substring(printablecase[1], 4, length(printablecase[1]));
         }
     }
 
@@ -259,6 +259,7 @@ class GenerationMap extends Program {
 
 
         printablecase = new String[]{"─────┐","     │","     │","─────┘"};
+        affichageJoueur(printablecase, map.taille-1);
         for (int j=0;j<4;j++) {
             if (posx == 0) {
                 printablemap[posx+j][posy] = printablecase[j];

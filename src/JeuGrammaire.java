@@ -28,41 +28,42 @@ class JeuGrammaire extends Program {
     void afficherQuestion(QuestionGrammaire selection){
         // ┌ ─ │ ┐ └ ┘
         println("\n");
-        print("┌");
+        String s = "";
+        s += "┌";
         for (int i=0;i<30+length(selection.question);i=i+1){
-            print("─");
+            s += "─";
         }
-        println("┐");
+        s += "┐";
+        cp.afficherTexte(s);
         println("│Le thème de la question est : "+ selection.question +"│");
-        print("└");
+        s = "";
+        s += "└";
         for (int i=0;i<30+length(selection.question);i=i+1){
-            print("─");
+            s += "─";
         }
-        println("┘");
+        s += "┘";
+        cp.afficherTexte(s);
     }
 
     int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
-        for(int i=0;i<(132/2-22/2);i=i+1) print(" ");
-        println("Le jeu de \"Grammaire\"");
+        cp.afficherTexte("Le jeu de \"Grammaire\"");
         print("\n\n");
-        for(int i=0;i<(132/2-77/2);i=i+1) print(" ");
-        println("les règles : un question sera posée il te faut selectionner la bonne réponse.");
-        for(int i=0;i<(132/2-69/2);i=i+1) print(" ");
-        println("Maintenat que tu as compris, appuye sur une touche pour lancer le jeu");
+        cp.afficherTexte("les règles : un question sera posée il te faut selectionner la bonne réponse.");
+        cp.afficherTexte("Appuie sur Entrée pour lancer le jeu");
         readString();
         cp.clearTerminal();
         
         QuestionGrammaire selection = tirageQuestion(bddQuestion);
         afficherQuestion(selection);
-        println("A : " + selection.choix[0]);
-        println("────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────");
-        println("B : " + selection.choix[1]);
-        println("────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────");
-        println("C : " + selection.choix[2]);
-        println("────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────");
-        println("Sélectionner votre réponse :");
+        cp.afficherTexte("A : " + selection.choix[0]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("B : " + selection.choix[1]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("C : " + selection.choix[2]);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("Sélectionner votre réponse :");
 
         int piecesgagnees = 0;
         String choix_joueur_input = " ";
@@ -73,12 +74,12 @@ class JeuGrammaire extends Program {
         char choix_joueur = charAt(choix_joueur_input, 0);
         if (equals(selection.choix[choix_joueur-'A'],selection.reponse)){
             piecesgagnees = 2;
-            println("Bien joué tu as trouvé la bonne réponse !");
-            println("Tu gagnes 2 pièces.");
+            cp.afficherTexte("Bien joué tu as trouvé la bonne réponse !");
+            cp.afficherTexte("Tu gagnes 2 pièces.");
         }else{
             piecesgagnees = -1;
-            println("Dommage c'est une mauvaise réponse.");
-            println("Tu perds 1 pièce.");  
+            cp.afficherTexte("Dommage c'est une mauvaise réponse.");
+            cp.afficherTexte("Tu perds 1 pièce.");  
         }
         readString();
         return piecesgagnees;

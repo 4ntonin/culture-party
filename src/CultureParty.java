@@ -10,6 +10,7 @@ class CultureParty extends Program {
     GenerationMap fonctionsMap = new GenerationMap();
 
     QuestionVide[] qvides = creerQuestionsCasesVides();
+    String[][] bddScore = recupBddScore();
 
     QuestionVide[] creerQuestionsCasesVides() {
         CSVFile csv = loadCSV("../ressources/QuestionsVide.csv");
@@ -35,6 +36,38 @@ class CultureParty extends Program {
             bdd[i-1] = q;
         }
         return bdd;
+    }
+    String[][] recupBddScore(){
+        CSVFile csv = loadCSV("../ressources/TopScore.csv");
+        int csvheight = rowCount(csv);
+        String[][] bddScore = new String[csvheight][2];
+        for (int i=0;i<csvheight;i++) {
+            bddScore[i][0] = getCell(csv, i, 0);
+            bddScore[i][1] = getCell(csv, i, 1);
+        }
+        return bddScore;
+    }
+
+    String[][] modifTabClassement(String nom,int score,String[][] tab){
+        int cpt = 0;
+        while(cpt<5 && score<stringToInt(tab[cpt][1])){
+            cpt = cpt +1;
+        }
+        if(cpt<4){
+            for(int i=3;i>=cpt;i=i-1){
+                tab[i+1][0]=tab[i][0];
+                tab[i+1][1]=tab[i][1];
+            }
+            tab[cpt][0] = nom;
+            tab[cpt][1] = ""+score;
+        }
+        return tab;
+    }
+
+    void afficherTableauScore(String[][] tab){
+        for(int i=0;i<5;i=i+1){
+            println((int)(i+1)+" : " +tab[i][0]+" | "+tab[i][1]);
+        }
     }
 
     int lancerDe(int taille) {
@@ -240,6 +273,13 @@ class CultureParty extends Program {
         afficherTexte("└──────────────────────────────────────┘");
         readString();
 
+        afficherTexte("Entrez votre nom : (3 caractères)");
+        String nomJoueur;
+        do {
+            nomJoueur = readString();
+        } while (length(nomJoueur) < 1);
+        nomJoueur = toUpperCase(nomJoueur);
+
         // JEU
         while (joueur.position < map.taille - 1) {
             clearTerminal();
@@ -258,7 +298,7 @@ class CultureParty extends Program {
             //     void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
             // }
             print("\n\n");
-            resde = lancerDe(6);
+            resde = lancerDe(1000);
             afficherTexte("Tu as fait " + resde + " !");
             readString();
             effectuerDeplacement(resde, map);
@@ -280,6 +320,9 @@ class CultureParty extends Program {
         text("yellow");
         print(joueur.pieces + " pièces !\n");
         reset();
+        bddScore = modifTabClassement(nomJoueur,joueur.pieces,bddScore);
+        saveCSV(bddScore,"../ressources/TopScore.csv");
+        afficherTableauScore(bddScore);
         readString();
         clearTerminal();
     }

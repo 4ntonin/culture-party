@@ -112,7 +112,7 @@ class Amogus extends Program {
 
         String choix_joueur_input = " ";
         while (!equals(toUpperCase(choix_joueur_input), "A") && !equals(toUpperCase(choix_joueur_input), "B") && !equals(toUpperCase(choix_joueur_input), "C") && !equals(toUpperCase(choix_joueur_input), "D")) {
-            for (int i=0;i<190/2;i++) print(" ");
+            for (int i=0;i<132/2;i++) print(" ");
             choix_joueur_input = readString();
             choix_joueur_input = toUpperCase(choix_joueur_input);
         }

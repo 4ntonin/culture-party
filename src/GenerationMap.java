@@ -77,6 +77,8 @@ class GenerationMap extends Program {
                 posy++;
             }
         }
+        mapnextvoisins[length(mapnextvoisins)-2] = DROITE;
+        mapnextvoisins[length(mapnextvoisins)-1] = DROITE;
 
         for (int i=0;i<map.taille;i++) {
             map.cases[i] = creerCase(map_events[i], mapnextvoisins[i]);
@@ -257,6 +259,11 @@ class GenerationMap extends Program {
             }
         }
 
+        for (int i=posy+1;i<length(printablemap, 2);i++) {
+            for (int j=0;j<length(printablemap, 1);j++) {
+                printablemap[j][i] = "";
+            }
+        }
 
         printablecase = new String[]{"─────┐","     │","     │","─────┘"};
         affichageJoueur(printablecase, map.taille-1);
@@ -275,28 +282,30 @@ class GenerationMap extends Program {
             print("       ");
             for (int j=0;j<length(printablemap, 2);j++) {
                 lenligne = length(printablemap[i][j]);
-                if (i == 1 || i == 4 || i == 7) {
-                    print(substring(printablemap[i][j], 0, 2));
-                    if (charAt(printablemap[i][j], 2) == joueur.nom || charAt(printablemap[i][j], 3) == joueur.nom) {
-                        text("red");
+                if (j<posy+1) {
+                    if (i == 1 || i == 4 || i == 7) {
+                        print(substring(printablemap[i][j], 0, 2));
+                        if (charAt(printablemap[i][j], 2) == joueur.nom || charAt(printablemap[i][j], 3) == joueur.nom) {
+                            text("red");
+                        }
+                        print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));
+                        reset();
+                        print(substring(printablemap[i][j], 4, length(printablemap[i][j])));
+                    } else if (i == 2 || i == 5 || i == 8) {
+                        print(substring(printablemap[i][j], 0, 2));
+                        if (charAt(printablemap[i][j], 2) == BOOSTER || charAt(printablemap[i][j], 3) == BOOSTER) {
+                            text("green");
+                        } else if (charAt(printablemap[i][j], 2) == RALENTISSEUR || charAt(printablemap[i][j], 3) == RALENTISSEUR) {
+                            text("yellow");
+                        } else if (charAt(printablemap[i][j], 2) == MINIJEU || charAt(printablemap[i][j], 3) == MINIJEU) {
+                            text("blue");
+                        }
+                        print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));
+                        reset();
+                        print(substring(printablemap[i][j], 4, length(printablemap[i][j])));
+                    } else {
+                        print(printablemap[i][j]);
                     }
-                    print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));
-                    reset();
-                    print(substring(printablemap[i][j], 4, length(printablemap[i][j])));
-                } else if (i == 2 || i == 5 || i == 8) {
-                    print(substring(printablemap[i][j], 0, 2));
-                    if (charAt(printablemap[i][j], 2) == BOOSTER || charAt(printablemap[i][j], 3) == BOOSTER) {
-                        text("green");
-                    } else if (charAt(printablemap[i][j], 2) == RALENTISSEUR || charAt(printablemap[i][j], 3) == RALENTISSEUR) {
-                        text("yellow");
-                    } else if (charAt(printablemap[i][j], 2) == MINIJEU || charAt(printablemap[i][j], 3) == MINIJEU) {
-                        text("blue");
-                    }
-                    print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));
-                    reset();
-                    print(substring(printablemap[i][j], 4, length(printablemap[i][j])));
-                } else {
-                    print(printablemap[i][j]);
                 }
             }
             println();

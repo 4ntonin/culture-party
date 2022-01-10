@@ -168,7 +168,7 @@ class CultureParty extends Program {
 
     void afficherTexte(String s) {
         int len = length(s);
-        for (int i=0;i<190/2-len/2;i++) print(" ");
+        for (int i=0;i<132/2-len/2;i++) print(" ");
         println(s);
     }
 
@@ -196,12 +196,12 @@ class CultureParty extends Program {
         afficherTexte("Voici quelques indications :");
         afficherTexte("____________________________________________\n\n");
         text("red");
-        for (int i=0;i<190/2-7;i++) print(" ");
+        for (int i=0;i<132/2-7;i++) print(" ");
         print(joueur.nom);
         reset();
         println(" : C'est toi !\n");
         text("green");
-        for (int i=0;i<190/2-42;i++) print(" ");
+        for (int i=0;i<132/2-42;i++) print(" ");
         print(BOOSTER + "");
         reset();
         print(" : C'est un ");
@@ -210,7 +210,7 @@ class CultureParty extends Program {
         reset();
         println(". Il te fera avancer de quelques cases et te donnera des pièces !\n");
         text("yellow");
-        for (int i=0;i<190/2-31;i++) print(" ");
+        for (int i=0;i<132/2-31;i++) print(" ");
         print(RALENTISSEUR + "");
         reset();
         print(" : C'est un ");
@@ -219,7 +219,7 @@ class CultureParty extends Program {
         reset();
         println(". Il te fera reculer de quelques cases.\n");
         text("blue");
-        for (int i=0;i<190/2-23;i++) print(" ");
+        for (int i=0;i<132/2-23;i++) print(" ");
         print(MINIJEU + "");
         reset();
         print(" : Cette case lancera un ");
@@ -227,7 +227,7 @@ class CultureParty extends Program {
         print("mini-jeu");
         reset();
         println(" aléatoire !\n");
-        for (int i=0;i<190/2-95/2;i++) print(" ");
+        for (int i=0;i<132/2-95/2;i++) print(" ");
         print("Quand tu tomberas sur une case vide, tu devras répondre à une question pour gagner des ");
         text("yellow");
         print("pièces");
@@ -249,7 +249,7 @@ class CultureParty extends Program {
             reset();
             fonctionsMap.joueur = joueur;
             fonctionsMap.afficherMap(map);
-            for (int i=0;i<190/2-18;i++) print(" ");
+            for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
             afficherTexte("Appuies sur Entrée pour lancer le dé");
             readString();
@@ -275,7 +275,7 @@ class CultureParty extends Program {
                 fonctionsMap.afficherMap(map);
             }
         }
-        for (int i=0;i<190/2-62/2;i++) print(" ");
+        for (int i=0;i<132/2-62/2;i++) print(" ");
         print("Bravo ! Tu as fini cette partie avec un total de ");
         text("yellow");
         print(joueur.pieces + " pièces !\n");

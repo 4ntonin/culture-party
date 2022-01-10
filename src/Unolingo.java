@@ -56,7 +56,7 @@ class Unolingo extends Program {
         QuestionLingo selection = tirageQuestion(bddQuestion);
         afficherQuestion(selection);
         cp.afficherTexte("Entrer la réponse :");
-        for (int i=0;i<190/2-2;i++) print(" ");
+        for (int i=0;i<132/2-2;i++) print(" ");
         String choix_joueur_input = "";
         choix_joueur_input = readString();
         choix_joueur_input = toLowerCase(choix_joueur_input); 

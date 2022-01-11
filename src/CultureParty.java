@@ -296,7 +296,7 @@ class CultureParty extends Program {
             afficherTexte("2. Charger une partie");
             for (int j=0;j<132/2;j++) print(" ");
             inputJoueur = readString();
-            if (equals(inputJoueur, "2")) {
+            if (equals(inputJoueur, "2") && equals(getCell(loadCSV("../ressources/Save.csv"), 0, 3), "VIDE") ) {
                 println();
                 clearLines(4);
                 do {
@@ -312,6 +312,14 @@ class CultureParty extends Program {
                 }
             }
         } while (!equals(inputJoueur, "1") && !equals(inputJoueur, "2"));
+        if (equals(inputJoueur, "2") && equals(getCell(loadCSV("../ressources/Save.csv"), 0, 3), "VIDE") ) {
+            afficherTexte("La sauvegarde est vide. Une nouvelle partie va commencer.\n\n\n");
+            inputJoueur = "1";
+            afficherTexte("┌─────────────────────┐");
+            afficherTexte("│  Appuie sur Entrée  │");
+            afficherTexte("└─────────────────────┘");
+            readString();
+        }
         Map map;
         if (equals(inputJoueur, "2")) {
             map = charger();

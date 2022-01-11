@@ -1,5 +1,6 @@
 class Joueur {
+    char car = '⬤';
     int position = 0;
-    char nom = '⬤';
     int pieces = 0;
+    String nom;
 }

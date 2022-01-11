@@ -172,7 +172,7 @@ class GenerationMap extends Program {
 
     void affichageJoueur(String[] printablecase, int i) {
         if (joueur.position == i) {
-            printablecase[1] = substring(printablecase[1], 0, 3) + joueur.nom + substring(printablecase[1], 4, length(printablecase[1]));
+            printablecase[1] = substring(printablecase[1], 0, 3) + joueur.car + substring(printablecase[1], 4, length(printablecase[1]));
         }
     }
 
@@ -288,7 +288,7 @@ class GenerationMap extends Program {
                 if (j<posy+1) {
                     if (i == 1 || i == 4 || i == 7) {
                         print(substring(printablemap[i][j], 0, 2));
-                        if (charAt(printablemap[i][j], 2) == joueur.nom || charAt(printablemap[i][j], 3) == joueur.nom) {
+                        if (charAt(printablemap[i][j], 2) == joueur.car || charAt(printablemap[i][j], 3) == joueur.car) {
                             text("red");
                         }
                         print(charAt(printablemap[i][j], 2) + "" + charAt(printablemap[i][j], 3));

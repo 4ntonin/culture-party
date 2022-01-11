@@ -66,7 +66,7 @@ class CultureParty extends Program {
 
     void afficherTableauScore(String[][] tab){
         for(int i=0;i<5;i=i+1){
-            println((int)(i+1)+" : " +tab[i][0]+" | "+tab[i][1]);
+            afficherTexte((int)(i+1)+" : " +tab[i][0]+" | "+tab[i][1]);
         }
     }
 
@@ -225,20 +225,46 @@ class CultureParty extends Program {
         return res;
     }
 
+    void sauvegarder(Map map) {
+        String itemsmap = "";
+        for (int i=0;i<map.taille;i++) {
+            itemsmap += map.cases[i].type;
+            itemsmap += map.cases[i].direction;
+        }
+        String[][] save = new String[][]{{joueur.nom, ""+joueur.pieces,""+joueur.position, itemsmap}};
+        saveCSV(save, "../ressources/Save.csv");
+    }
+
+    Map charger() {
+        CSVFile csvsave = loadCSV("../ressources/Save.csv");
+        joueur.nom = getCell(csvsave, 0, 0);
+        joueur.pieces = stringToInt(getCell(csvsave, 0, 1));
+        joueur.position = stringToInt(getCell(csvsave, 0, 2));
+        String itemsmap = getCell(csvsave, 0, 3);
+        int len = length(itemsmap), cpt = 0;
+        Map map = new Map();
+        for (int i=0;i<len;i=i+2) {
+            map.cases[cpt] = fonctionsMap.creerCase(charAt(itemsmap, i), charAt(itemsmap, i+1));
+            cpt++;
+        }
+        return map;
+    }
+
     void algorithm() {
 
         // PARAMETRAGE
-        String[] logo = new String[]{" ,-----.        ,--.  ,--.                            ,------.                  ,--.           ",
-                                     "'  .--./,--.,--.|  |,-'  '-.,--.,--.,--.--. ,---.     |  .--. ' ,--,--.,--.--.,-'  '-.,--. ,--.",
-                                     "|  |    |  ||  ||  |'-.  .-'|  ||  ||  .--'| .-. :    |  '--' |' ,-.  ||  .--''-.  .-' \\  '  / ",
-                                     "'  '--'\\'  ''  '|  |  |  |  '  ''  '|  |   \\   --.    |  | --' \\ '-'  ||  |     |  |    \\   '  ",
-                                     " `-----' `----' `--'  `--'   `----' `--'    `----'    `--'      `--`--'`--'     `--'  .-'  /   ",
-                                     "                                                                                      `---'    "};
+        String[] chaine;
+        chaine = new String[]{" ,-----.        ,--.  ,--.                            ,------.                  ,--.           ",
+                              "'  .--./,--.,--.|  |,-'  '-.,--.,--.,--.--. ,---.     |  .--. ' ,--,--.,--.--.,-'  '-.,--. ,--.",
+                              "|  |    |  ||  ||  |'-.  .-'|  ||  ||  .--'| .-. :    |  '--' |' ,-.  ||  .--''-.  .-' \\  '  / ",
+                              "'  '--'\\'  ''  '|  |  |  |  '  ''  '|  |   \\   --.    |  | --' \\ '-'  ||  |     |  |    \\   '  ",
+                              " `-----' `----' `--'  `--'   `----' `--'    `----'    `--'      `--`--'`--'     `--'  .-'  /   ",
+                              "                                                                                      `---'    "};
         hide();
         clearTerminal();
         print("\n\n\n\n\n");
         text("blue");
-        afficherTexte(logo);
+        afficherTexte(chaine);
         reset();
         print("\n\n\n\n\n");
         afficherTexte("┌─────────────────────┐");
@@ -246,79 +272,106 @@ class CultureParty extends Program {
         afficherTexte("└─────────────────────┘");
         readString();
 
-        Map map = fonctionsMap.creerMap();
+        String inputJoueur, inputJoueurverif;
+        joueur.nom = getCell(loadCSV("../ressources/Save.csv"), 0, 0);
+        do {
+            afficherTexte("1. Nouvelle Partie");
+            afficherTexte("2. Charger une partie");
+            for (int j=0;j<132/2;j++) print(" ");
+            inputJoueur = readString();
+            if (equals(inputJoueur, "2")) {
+                println();
+                do {
+                    afficherTexte("Es-tu sûr de vouloir charger la partie de " + joueur.nom + " ?");
+                    println();
+                    afficherTexte("1. Je suis sûr");
+                    afficherTexte("2. Annuler");
+                    inputJoueurverif = readString();
+                } while (!equals(inputJoueurverif, "1") && !equals(inputJoueurverif, "2"));
+                if (equals(inputJoueurverif, "2")) {
+                    inputJoueur = "";
+                }
+            }
+        } while (!equals(inputJoueur, "1") && !equals(inputJoueur, "2"));
+        Map map;
+        if (equals(inputJoueur, "2")) {
+            map = charger();
+        } else {
+            map = fonctionsMap.creerMap();
+            print("\n\n\n");
+            afficherTexte("Voici quelques indications :");
+            afficherTexte("____________________________________________\n\n");
+            text("red");
+            for (int i=0;i<132/2-7;i++) print(" ");
+            print(joueur.car);
+            reset();
+            println(" : C'est toi !\n");
+            text("green");
+            for (int i=0;i<132/2-42;i++) print(" ");
+            print(BOOSTER + "");
+            reset();
+            print(" : C'est un ");
+            text("green");
+            print("booster");
+            reset();
+            println(". Il te fera avancer de quelques cases et te donnera des pièces !\n");
+            text("yellow");
+            for (int i=0;i<132/2-31;i++) print(" ");
+            print(RALENTISSEUR + "");
+            reset();
+            print(" : C'est un ");
+            text("yellow");
+            print("ralentisseur");
+            reset();
+            println(". Il te fera reculer de quelques cases.\n");
+            text("blue");
+            for (int i=0;i<132/2-23;i++) print(" ");
+            print(MINIJEU + "");
+            reset();
+            print(" : Cette case lancera un ");
+            text("blue");
+            print("mini-jeu");
+            reset();
+            println(" aléatoire !\n");
+            for (int i=0;i<132/2-95/2;i++) print(" ");
+            print("Quand tu tomberas sur une case vide, tu devras répondre à une question pour gagner des ");
+            text("yellow");
+            print("pièces");
+            reset();
+            println(" !\n\n");
+            afficherTexte("À tout moment dans la partie, avant de lancer le dé, tu peux sauvegarder ta progression en entrant \"SAVE\"");
+            print("\n\n\n\n\n\n\n");
+            afficherTexte("┌──────────────────────────────────────┐");
+            afficherTexte("│ Appuie sur Entrée pour lancer le jeu │");
+            afficherTexte("└──────────────────────────────────────┘");
+            readString();
+            show();
+            clearTerminal();
+            text("blue");
+            print("\n\n\n\n\n\n\n");
+            chaine = new String[]{" _______         __                                      __                                        ",
+                                  "|    ___|.-----.|  |_.----.-----.-----.    .--.--.-----.|  |_.----.-----.    .-----.-----.--------.",
+                                  "|    ___||     ||   _|   _|  -__|-- __|    |  |  |  _  ||   _|   _|  -__|    |     |  _  |        |",
+                                  "|_______||__|__||____|__| |_____|_____|     \\___/|_____||____|__| |_____|    |__|__|_____|__|__|__|",};
+            afficherTexte(chaine);
+            reset();
+            print("\n\n\n\n\n");
+            do {
+                for (int j=0;j<132/2-1;j++) print(" ");
+                joueur.nom = readString();
+            } while (length(joueur.nom) < 1 || contient(joueur.nom, ','));
+            joueur.nom = toUpperCase(joueur.nom);
+        }
+
         clearTerminal();
 
         int resde;
         fonctionsMap.joueur = joueur;
 
-        print("\n\n\n");
-        afficherTexte("Voici quelques indications :");
-        afficherTexte("____________________________________________\n\n");
-        text("red");
-        for (int i=0;i<132/2-7;i++) print(" ");
-        print(joueur.nom);
-        reset();
-        println(" : C'est toi !\n");
-        text("green");
-        for (int i=0;i<132/2-42;i++) print(" ");
-        print(BOOSTER + "");
-        reset();
-        print(" : C'est un ");
-        text("green");
-        print("booster");
-        reset();
-        println(". Il te fera avancer de quelques cases et te donnera des pièces !\n");
-        text("yellow");
-        for (int i=0;i<132/2-31;i++) print(" ");
-        print(RALENTISSEUR + "");
-        reset();
-        print(" : C'est un ");
-        text("yellow");
-        print("ralentisseur");
-        reset();
-        println(". Il te fera reculer de quelques cases.\n");
-        text("blue");
-        for (int i=0;i<132/2-23;i++) print(" ");
-        print(MINIJEU + "");
-        reset();
-        print(" : Cette case lancera un ");
-        text("blue");
-        print("mini-jeu");
-        reset();
-        println(" aléatoire !\n");
-        for (int i=0;i<132/2-95/2;i++) print(" ");
-        print("Quand tu tomberas sur une case vide, tu devras répondre à une question pour gagner des ");
-        text("yellow");
-        print("pièces");
-        reset();
-        println(" !\n\n");
-        afficherTexte("À tout moment dans la partie, avant de lancer le dé, tu peux sauvegarder ta progression en entrant \"SAVE\"");
-        print("\n\n\n\n\n\n\n");
-        afficherTexte("┌──────────────────────────────────────┐");
-        afficherTexte("│ Appuie sur Entrée pour lancer le jeu │");
-        afficherTexte("└──────────────────────────────────────┘");
-        readString();
-        show();
-        clearTerminal();
-        text("blue");
-        print("\n\n\n\n\n\n\n");
-        String[] sentreznom = new String[]{" _______         __                                      __                                        ",
-                                           "|    ___|.-----.|  |_.----.-----.-----.    .--.--.-----.|  |_.----.-----.    .-----.-----.--------.",
-                                           "|    ___||     ||   _|   _|  -__|-- __|    |  |  |  _  ||   _|   _|  -__|    |     |  _  |        |",
-                                           "|_______||__|__||____|__| |_____|_____|     \\___/|_____||____|__| |_____|    |__|__|_____|__|__|__|",};
-        afficherTexte(sentreznom);
-        reset();
-        String nomJoueur;
-        print("\n\n\n\n\n");
-        do {
-            for (int j=0;j<132/2-1;j++) print(" ");
-            nomJoueur = readString();
-        } while (length(nomJoueur) < 1 || contient(nomJoueur, ','));
-        nomJoueur = toUpperCase(nomJoueur);
+        inputJoueur = "";
 
         // JEU
-        while (joueur.position < map.taille - 1) {
+        while (joueur.position < map.taille - 1 && !equals(inputJoueur, "SAVE")) {
             clearTerminal();
             text("yellow");
             println();
@@ -329,40 +382,46 @@ class CultureParty extends Program {
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
             afficherTexte("Appuies sur Entrée pour lancer le dé");
-            hide();
-            readString();
-            // String ecrit =readString();
-            // if (equals(ecrit,"SAVE")){
-            //     void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
-            // }
-            print("\n\n");
-            resde = lancerDe(6);
-            afficherTexte("Tu as fait " + resde + " !");
-            readString();
-            effectuerDeplacement(resde, map);
-            affichageCaseActuelle(map);
-            show();
-            lancerEvent(map);
-            print("\n\n");
-            if (map.cases[joueur.position].type != VIDE) {
-                clearTerminal();
-                text("yellow");
-                println();
-                afficherTexte("Pièces : " + joueur.pieces + "\n");
-                reset();
-                fonctionsMap.joueur = joueur;
-                fonctionsMap.afficherMap(map);
+            inputJoueur = readString();
+            if (equals(inputJoueur, "SAVE")){
+                sauvegarder(map);
+            } else {
+                print("\n\n");
+                resde = lancerDe(6);
+                afficherTexte("Tu as fait " + resde + " !");
+                readString();
+                effectuerDeplacement(resde, map);
+                affichageCaseActuelle(map);
+                lancerEvent(map);
+                print("\n\n");
+                if (map.cases[joueur.position].type != VIDE) {
+                    clearTerminal();
+                    text("yellow");
+                    println();
+                    afficherTexte("Pièces : " + joueur.pieces + "\n");
+                    reset();
+                    fonctionsMap.joueur = joueur;
+                    fonctionsMap.afficherMap(map);
+                }
             }
         }
-        for (int i=0;i<132/2-62/2;i++) print(" ");
-        print("Bravo ! Tu as fini cette partie avec un total de ");
-        text("yellow");
-        print(joueur.pieces + " pièces !\n");
-        reset();
-        bddScore = modifTabClassement(nomJoueur,joueur.pieces,bddScore);
-        saveCSV(bddScore,"../ressources/TopScore.csv");
-        afficherTableauScore(bddScore);
-        readString();
-        clearTerminal();
+        if (!equals(inputJoueur, "SAVE")){
+            for (int i=0;i<132/2-62/2;i++) print(" ");
+            print("Bravo ! Tu as fini cette partie avec un total de ");
+            text("yellow");
+            print(joueur.pieces + " pièces !\n");
+            reset();
+            bddScore = modifTabClassement(joueur.nom,joueur.pieces,bddScore);
+            saveCSV(bddScore,"../ressources/TopScore.csv");
+            print("\n\n");
+            afficherTableauScore(bddScore);
+            readString();
+            clearTerminal();
+        } else {
+            afficherTexte("La partie a été sauvegardée.");
+            afficherTexte("Appuyez sur Entrée pour quitter.");
+            readString();
+            clearTerminal();
+        }
     }
 }

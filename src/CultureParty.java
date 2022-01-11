@@ -80,6 +80,7 @@ class CultureParty extends Program {
             plus = -1;
             deplacement = abs(deplacement);
         }
+        hide();
         while (i < deplacement && joueur.position < map.taille-1) {
             joueur.position += plus;
             i++;
@@ -92,6 +93,7 @@ class CultureParty extends Program {
             fonctionsMap.afficherMap(map);
             delay(500);
         }
+        show();
         if (joueur.position < 0) joueur.position = 0;
     }
 
@@ -205,14 +207,39 @@ class CultureParty extends Program {
         println(s);
     }
 
+    void afficherTexte(String[] s) {
+        int len = length(s);
+        for (int i=0;i<len;i++) {
+            for (int j=0;j<132/2-length(s[i])/2;j++) print(" ");
+            println(s[i]);
+        }
+    }
+
+    boolean contient(String s, char c) {
+        boolean res = false;
+        int i = 0, len = length(s);
+        while (!res && i<len) {
+            if (charAt(s, i) == c) res = true;
+            i++;
+        }
+        return res;
+    }
+
     void algorithm() {
 
         // PARAMETRAGE
+        String[] logo = new String[]{" ,-----.        ,--.  ,--.                            ,------.                  ,--.           ",
+                                     "'  .--./,--.,--.|  |,-'  '-.,--.,--.,--.--. ,---.     |  .--. ' ,--,--.,--.--.,-'  '-.,--. ,--.",
+                                     "|  |    |  ||  ||  |'-.  .-'|  ||  ||  .--'| .-. :    |  '--' |' ,-.  ||  .--''-.  .-' \\  '  / ",
+                                     "'  '--'\\'  ''  '|  |  |  |  '  ''  '|  |   \\   --.    |  | --' \\ '-'  ||  |     |  |    \\   '  ",
+                                     " `-----' `----' `--'  `--'   `----' `--'    `----'    `--'      `--`--'`--'     `--'  .-'  /   ",
+                                     "                                                                                      `---'    "};
+        hide();
         clearTerminal();
         print("\n\n\n\n\n");
-        afficherTexte("══════════════════════════");
-        afficherTexte("Bienvenue dans Culture Party");
-        afficherTexte("══════════════════════════");
+        text("blue");
+        afficherTexte(logo);
+        reset();
         print("\n\n\n\n\n");
         afficherTexte("┌─────────────────────┐");
         afficherTexte("│  Appuie sur Entrée  │");
@@ -272,12 +299,22 @@ class CultureParty extends Program {
         afficherTexte("│ Appuie sur Entrée pour lancer le jeu │");
         afficherTexte("└──────────────────────────────────────┘");
         readString();
-
-        afficherTexte("Entrez votre nom : (3 caractères)");
+        show();
+        clearTerminal();
+        text("blue");
+        print("\n\n\n\n\n\n\n");
+        String[] sentreznom = new String[]{" _______         __                                      __                                        ",
+                                           "|    ___|.-----.|  |_.----.-----.-----.    .--.--.-----.|  |_.----.-----.    .-----.-----.--------.",
+                                           "|    ___||     ||   _|   _|  -__|-- __|    |  |  |  _  ||   _|   _|  -__|    |     |  _  |        |",
+                                           "|_______||__|__||____|__| |_____|_____|     \\___/|_____||____|__| |_____|    |__|__|_____|__|__|__|",};
+        afficherTexte(sentreznom);
+        reset();
         String nomJoueur;
+        print("\n\n\n\n\n");
         do {
+            for (int j=0;j<132/2-1;j++) print(" ");
             nomJoueur = readString();
-        } while (length(nomJoueur) < 1);
+        } while (length(nomJoueur) < 1 || contient(nomJoueur, ','));
         nomJoueur = toUpperCase(nomJoueur);
 
         // JEU
@@ -292,17 +329,19 @@ class CultureParty extends Program {
             for (int i=0;i<132/2-18;i++) print(" ");
             print("\n\n\n");
             afficherTexte("Appuies sur Entrée pour lancer le dé");
+            hide();
             readString();
             // String ecrit =readString();
             // if (equals(ecrit,"SAVE")){
             //     void saveCSV(String[][] tab = new String[][]{carte,nbpieces,positionsJoueur},{map,joueur.pieces,joueur.position}, String "./Save/SaveGame.csv")
             // }
             print("\n\n");
-            resde = lancerDe(1000);
+            resde = lancerDe(6);
             afficherTexte("Tu as fait " + resde + " !");
             readString();
             effectuerDeplacement(resde, map);
             affichageCaseActuelle(map);
+            show();
             lancerEvent(map);
             print("\n\n");
             if (map.cases[joueur.position].type != VIDE) {

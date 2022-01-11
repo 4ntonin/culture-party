@@ -30,15 +30,15 @@ class JeuGrammaire extends Program {
         println("\n");
         String s = "";
         s += "┌";
-        for (int i=0;i<30+length(selection.question);i=i+1){
+        for (int i=0;i<32+length(selection.question);i=i+1){
             s += "─";
         }
         s += "┐";
         cp.afficherTexte(s);
-        println("│Le thème de la question est : "+ selection.question +"│");
+        cp.afficherTexte("│  "+ selection.question +"  │");
         s = "";
         s += "└";
-        for (int i=0;i<30+length(selection.question);i=i+1){
+        for (int i=0;i<32+length(selection.question);i=i+1){
             s += "─";
         }
         s += "┘";

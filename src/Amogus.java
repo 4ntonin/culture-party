@@ -47,9 +47,9 @@ class Amogus extends Program {
                                        "⠀⠀⠀⠀⠀⠀⠀⣿⣿⠀⠀⠀⠀⠀⣿⣿⡇⠀⢹⣿⡆⠀⠀⠀⣸⣿⠇⠀⠀⠀",
                                        "⠀⠀⠀⠀⠀⠀⠀⢿⣿⣦⣄⣀⣠⣴⣿⣿⠁⠀⠈⠻⣿⣿⣿⣿⡿⠏⠀⠀⠀⠀",
                                        "⠀⠀⠀⠀⠀⠀⠀⠈⠛⠻⠿⠿⠿⠿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀"};
-        println("                                   A:                              B:                              C:                              D:");
+        println("      A:                              B:                              C:                              D:");
         for(int i =0;i<length(amogus);i=i+1){
-            print("                                   ");
+            print("      ");
             for(int j = 0; j<4;j=j+1){
                 if(j==0){
                     text("red");

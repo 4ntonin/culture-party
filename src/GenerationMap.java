@@ -39,51 +39,54 @@ class GenerationMap extends Program {
         int random_pos_voisin;
         int posx = 0, posy = 0;
         int cptdroite = 0;
-        char[] mapnextvoisins = new char[map.taille];
-        mapnextvoisins[0] = DROITE;
-        mapnextvoisins[1] = DROITE;
+        char[] mapdirection = new char[map.taille];
+        mapdirection[0] = DROITE;
+        mapdirection[1] = DROITE;
         for (int i=2;i<map.taille-2;i++) {
             random_pos_voisin = (int) (random() * 3);
-            if (random_pos_voisin == 0 && mapnextvoisins[i-1] == BAS) {
+            if (random_pos_voisin == 0 && mapdirection[i-1] == BAS) {
                 do {
                     random_pos_voisin = (int) (random() * 3);
                 } while (random_pos_voisin == 0);
-            } else if (random_pos_voisin == 1 && mapnextvoisins[i-1] == HAUT) {
+            } else if (random_pos_voisin == 1 && mapdirection[i-1] == HAUT) {
                 do {
                     random_pos_voisin = (int) (random() * 3);
                 } while (random_pos_voisin == 1);
             }
-            if (i > 2 && (mapnextvoisins[i-2] == HAUT || mapnextvoisins[i-2] == BAS)) {
-                mapnextvoisins[i] = DROITE;
+            if (i > 2 && (mapdirection[i-2] == HAUT || mapdirection[i-2] == BAS)) {
+                mapdirection[i] = DROITE;
             } else if (random_pos_voisin == 0) {
                 if (posx == 0) {
-                    mapnextvoisins[i] = DROITE;
+                    mapdirection[i] = DROITE;
                     posy++;
                 } else {
-                    mapnextvoisins[i] = HAUT;
+                    mapdirection[i] = HAUT;
                     posx--;
                 }
             } else if (random_pos_voisin == 1) {
                 if (posx == 2) {
-                    mapnextvoisins[i] = DROITE;
+                    mapdirection[i] = DROITE;
                     posy++;
                 } else {
-                    mapnextvoisins[i] = BAS;
+                    mapdirection[i] = BAS;
                     posx++;
                 }
             } else {
-                mapnextvoisins[i] = DROITE;
+                mapdirection[i] = DROITE;
                 cptdroite++;
                 posy++;
             }
         }
-        mapnextvoisins[length(mapnextvoisins)-2] = DROITE;
-        mapnextvoisins[length(mapnextvoisins)-1] = DROITE;
+        mapdirection[length(mapdirection)-2] = DROITE;
+        mapdirection[length(mapdirection)-1] = DROITE;
 
         for (int i=0;i<map.taille;i++) {
-            map.cases[i] = creerCase(map_events[i], mapnextvoisins[i]);
+            map.cases[i] = creerCase(map_events[i], mapdirection[i]);
         }
 
+        int nbdroite = 0;
+        for (int i=0;i<map.taille;i++) if (mapdirection[i] == DROITE) nbdroite++;
+        if (nbdroite > 20) return creerMap();
         return map;
     }
 

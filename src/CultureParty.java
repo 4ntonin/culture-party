@@ -175,12 +175,16 @@ class CultureParty extends Program {
             while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B")) {
                 guessinput = readString();
                 guessinput = toUpperCase(guessinput);
+                clearLines(1);
             }
+            clearLines(7);
         } else {
             while (!equals(toUpperCase(guessinput), "A") && !equals(toUpperCase(guessinput), "B") && !equals(toUpperCase(guessinput), "C") && !equals(toUpperCase(guessinput), "D")){
                 guessinput = readString();
                 guessinput = toUpperCase(guessinput);
+                clearLines(1);
             }
+            clearLines(9);
         }
         char guess = charAt(guessinput, 0); 
         println();
@@ -212,6 +216,13 @@ class CultureParty extends Program {
         for (int i=0;i<len;i++) {
             for (int j=0;j<132/2-length(s[i])/2;j++) print(" ");
             println(s[i]);
+        }
+    }
+
+    void clearLines(int number) {
+        for (int i=0;i<number;i++) {
+            up();
+            clearLine();
         }
     }
 
@@ -253,6 +264,11 @@ class CultureParty extends Program {
     void algorithm() {
 
         // PARAMETRAGE
+        clearTerminal();
+        print("\n\nPour une meilleure expérience visuelle, il vous est recommandé de mettre votre terminal en 132x43 caractères.\nSi cela vous est impossible, mettez votre fenêtre en plein écran.\n\n\n\n\n\n");
+        println("Une fois cela effectué, appuyez sur Entrée.");
+        readString();
+
         String[] chaine;
         chaine = new String[]{" ,-----.        ,--.  ,--.                            ,------.                  ,--.           ",
                               "'  .--./,--.,--.|  |,-'  '-.,--.,--.,--.--. ,---.     |  .--. ' ,--,--.,--.--.,-'  '-.,--. ,--.",
@@ -274,6 +290,7 @@ class CultureParty extends Program {
 
         String inputJoueur, inputJoueurverif;
         joueur.nom = getCell(loadCSV("../ressources/Save.csv"), 0, 0);
+        clearLines(4);
         do {
             afficherTexte("1. Nouvelle Partie");
             afficherTexte("2. Charger une partie");
@@ -281,8 +298,9 @@ class CultureParty extends Program {
             inputJoueur = readString();
             if (equals(inputJoueur, "2")) {
                 println();
+                clearLines(4);
                 do {
-                    afficherTexte("Es-tu sûr de vouloir charger la partie de " + joueur.nom + " ?");
+                    afficherTexte("Es-tu sûr de vouloir charger la partie de \"" + joueur.nom + "\" ?");
                     println();
                     afficherTexte("1. Je suis sûr");
                     afficherTexte("2. Annuler");
@@ -290,6 +308,7 @@ class CultureParty extends Program {
                 } while (!equals(inputJoueurverif, "1") && !equals(inputJoueurverif, "2"));
                 if (equals(inputJoueurverif, "2")) {
                     inputJoueur = "";
+                    clearLines(5);
                 }
             }
         } while (!equals(inputJoueur, "1") && !equals(inputJoueur, "2"));
@@ -298,6 +317,7 @@ class CultureParty extends Program {
             map = charger();
         } else {
             map = fonctionsMap.creerMap();
+            clearTerminal();
             print("\n\n\n");
             afficherTexte("Voici quelques indications :");
             afficherTexte("____________________________________________\n\n");
@@ -383,6 +403,7 @@ class CultureParty extends Program {
             print("\n\n\n");
             afficherTexte("Appuies sur Entrée pour lancer le dé");
             inputJoueur = readString();
+            clearLines(2);
             if (equals(inputJoueur, "SAVE")){
                 sauvegarder(map);
             } else {
@@ -392,17 +413,9 @@ class CultureParty extends Program {
                 readString();
                 effectuerDeplacement(resde, map);
                 affichageCaseActuelle(map);
+                clearLines(3);
                 lancerEvent(map);
                 print("\n\n");
-                if (map.cases[joueur.position].type != VIDE) {
-                    clearTerminal();
-                    text("yellow");
-                    println();
-                    afficherTexte("Pièces : " + joueur.pieces + "\n");
-                    reset();
-                    fonctionsMap.joueur = joueur;
-                    fonctionsMap.afficherMap(map);
-                }
             }
         }
         if (!equals(inputJoueur, "SAVE")){

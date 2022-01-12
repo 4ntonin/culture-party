@@ -18,8 +18,24 @@ class Unolingo extends Program {
         return bdd;
     }
 
-    QuestionLingo tirageQuestion(QuestionLingo[] bdd){
-        return bdd[(int)(random()*length(bdd))];
+    QuestionLingo tirageQuestion(){
+        int lenbdd = length(bddQuestion);
+        int rand = (int) (random() * lenbdd);
+        QuestionLingo randomq = bddQuestion[rand];
+        if (lenbdd > 1) {
+            QuestionLingo[] tmpbdd = new QuestionLingo[lenbdd-1];
+            int cpt = 0;
+            for (int i=0;i<lenbdd;i++) {
+                if (!equals(bddQuestion[i].traduire, randomq.traduire)) {
+                    tmpbdd[cpt] = bddQuestion[i];
+                    cpt++;
+                }
+            }
+            bddQuestion = tmpbdd;
+        } else {
+            bddQuestion = creerBddQuestion();
+        }
+        return randomq;
     }
 
     void afficherQuestion(QuestionLingo selection){
@@ -65,7 +81,9 @@ class Unolingo extends Program {
         cp.clearTerminal();
 
         int piecesgagnees = 0;
-        QuestionLingo selection = tirageQuestion(bddQuestion);
+        println(length(bddQuestion));
+        QuestionLingo selection = tirageQuestion();
+        println(length(bddQuestion));
         afficherQuestion(selection);
         print("\n\n\n");
         cp.afficherTexte("Entrer la réponse :");

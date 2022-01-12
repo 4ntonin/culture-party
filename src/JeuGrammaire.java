@@ -20,9 +20,25 @@ class JeuGrammaire extends Program {
         }
         return bdd;
     }
-    
-    QuestionGrammaire tirageQuestion(QuestionGrammaire[] bdd){
-        return bdd[(int)(random()*length(bdd))];
+
+    QuestionGrammaire tirageQuestion(){
+        int lenbdd = length(bddQuestion);
+        int rand = (int) (random() * lenbdd);
+        QuestionGrammaire randomq = bddQuestion[rand];
+        if (lenbdd > 1) {
+            QuestionGrammaire[] tmpbdd = new QuestionGrammaire[lenbdd-1];
+            int cpt = 0;
+            for (int i=0;i<lenbdd;i++) {
+                if (!equals(bddQuestion[i].question, randomq.question)) {
+                    tmpbdd[cpt] = bddQuestion[i];
+                    cpt++;
+                }
+            }
+            bddQuestion = tmpbdd;
+        } else {
+            bddQuestion = creerBddQuestion();
+        }
+        return randomq;
     }
 
     void afficherQuestion(QuestionGrammaire selection){
@@ -65,14 +81,16 @@ class JeuGrammaire extends Program {
         readString();
         cp.clearTerminal();
         
-        QuestionGrammaire selection = tirageQuestion(bddQuestion);
+        println(length(bddQuestion));
+        QuestionGrammaire selection = tirageQuestion();
+        println(length(bddQuestion));
         afficherQuestion(selection);
         cp.afficherTexte("A : " + selection.choix[0]);
-        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("─────────────────────────────────────────────────");
         cp.afficherTexte("B : " + selection.choix[1]);
-        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("─────────────────────────────────────────────────");
         cp.afficherTexte("C : " + selection.choix[2]);
-        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
+        cp.afficherTexte("─────────────────────────────────────────────────");
         cp.afficherTexte("Sélectionner votre réponse :");
 
         int piecesgagnees = 0;

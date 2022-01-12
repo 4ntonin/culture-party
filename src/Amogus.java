@@ -22,8 +22,24 @@ class Amogus extends Program {
         return bdd;
     }
     
-    QuestionImposteur tirageQuestion(QuestionImposteur[] bdd){
-        return bdd[(int)(random()*length(bdd))];
+    QuestionImposteur tirageQuestion(){
+        int lenbdd = length(bddQuestion);
+        int rand = (int) (random() * lenbdd);
+        QuestionImposteur randomq = bddQuestion[rand];
+        if (lenbdd > 1) {
+            QuestionImposteur[] tmpbdd = new QuestionImposteur[lenbdd-1];
+            int cpt = 0;
+            for (int i=0;i<lenbdd;i++) {
+                if (!equals(bddQuestion[i].rep, randomq.rep)) {
+                    tmpbdd[cpt] = bddQuestion[i];
+                    cpt++;
+                }
+            }
+            bddQuestion = tmpbdd;
+        } else {
+            bddQuestion = creerBddQuestion();
+        }
+        return randomq;
     }
 
     void afficherAmogus(){
@@ -108,15 +124,15 @@ class Amogus extends Program {
         cp.clearTerminal();
         
         int piecesgagnees = 0;
-        QuestionImposteur selection = tirageQuestion(bddQuestion);
+        println(length(bddQuestion));
+        QuestionImposteur selection = tirageQuestion();
+        println(length(bddQuestion));
         afficherAmogus();
         afficherTheme(selection);
+        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
         cp.afficherTexte("La personne A dit : " + selection.choix[0]);
-        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
         cp.afficherTexte("La personne B dit : " + selection.choix[1]);
-        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
         cp.afficherTexte("La personne C dit : " + selection.choix[2]);
-        cp.afficherTexte("──────────────────────────────────────────────────────────────────");
         cp.afficherTexte("La personne D dit : " + selection.choix[3]);
         cp.afficherTexte("──────────────────────────────────────────────────────────────────");
         cp.afficherTexte("Sélectionnez votre réponse :");

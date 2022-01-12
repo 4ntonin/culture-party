@@ -115,55 +115,67 @@ class CultureParty extends Program {
         readString();
     }
 
-    void lancerEvent(Map map) {
+    void lancerEvent(Map map, Amogus jeuamogus, Unolingo jeuunolingo, JeuGrammaire jeugrammaire) {
         char caseactuelle = map.cases[joueur.position].type;
         if (caseactuelle == BOOSTER) {
-            eventBooster(map);
+            eventBooster(map, jeuamogus, jeuunolingo, jeugrammaire);
         } else if (caseactuelle == RALENTISSEUR) {
-            eventRalentisseur(map);
+            eventRalentisseur(map, jeuamogus, jeuunolingo, jeugrammaire);
         } else if (caseactuelle == MINIJEU) {
-            eventMiniJeu();
+            eventMiniJeu(jeuamogus, jeuunolingo, jeugrammaire);
         } else {
             eventQuestion();
         }
     }
 
-    void eventBooster(Map map) {
+    void eventBooster(Map map, Amogus jeuamogus, Unolingo jeuunolingo, JeuGrammaire jeugrammaire) {
         // dé ?
         int randint = (int) (random() * 3 + 1);
         joueur.pieces += randint;
         effectuerDeplacement(randint, map);
         affichageCaseActuelle(map);
-        lancerEvent(map);
+        lancerEvent(map, jeuamogus, jeuunolingo, jeugrammaire);
     }
 
-    void eventRalentisseur(Map map) {
+    void eventRalentisseur(Map map, Amogus jeuamogus, Unolingo jeuunolingo, JeuGrammaire jeugrammaire) {
         // dé ?
         int randint = (int) (random() * 3 - 4);
         effectuerDeplacement(randint, map);
         affichageCaseActuelle(map);
-        lancerEvent(map);
+        lancerEvent(map, jeuamogus, jeuunolingo, jeugrammaire);
     }
 
-    void eventMiniJeu() {
+    void eventMiniJeu(Amogus jeuamogus, Unolingo jeuunolingo, JeuGrammaire jeugrammaire) {
         int choix_jeu = (int)(random()*3);
         if(choix_jeu == 0){
-            Amogus jeuamogus = new Amogus();
             joueur.pieces += jeuamogus.lancerJeu();
         }else if(choix_jeu == 1){
-            Unolingo jeuunolingo = new Unolingo();
             joueur.pieces += jeuunolingo.lancerJeu(); 
         }else{
-            JeuGrammaire jeugrammaire = new JeuGrammaire();
             joueur.pieces += jeugrammaire.lancerJeu(); 
 
         }
     }
 
     void eventQuestion() {
-        println("\n\n");
-        QuestionVide randomq = qvides[(int) (random() * length(qvides))];
+        int lenqvides = length(qvides);
+        int rand = (int) (random() * lenqvides);
+        QuestionVide randomq = qvides[rand];
+        if (lenqvides > 1) {
+            QuestionVide[] tmpqvides = new QuestionVide[lenqvides-1];
+            int cpt = 0;
+            for (int i=0;i<lenqvides;i++) {
+                if (!equals(qvides[i].question, randomq.question)) {
+                    tmpqvides[cpt] = qvides[i];
+                    cpt++;
+                }
+            }
+            qvides = tmpqvides;
+        } else {
+            qvides = creerQuestionsCasesVides();
+        }
         int taillequestion = length(randomq.choix);
+        println("\n\n");
         afficherTexte(randomq.question);
         println("\n");
         for (char i='A';i<taillequestion+'A';i=(char) (i+1)) {
@@ -398,6 +410,10 @@ class CultureParty extends Program {
 
         inputJoueur = "";
 
+        Amogus jeuamogus = new Amogus();
+        Unolingo jeuunolingo = new Unolingo();
+        JeuGrammaire jeugrammaire = new JeuGrammaire();
+
         // JEU
         while (joueur.position < map.taille - 1 && !equals(inputJoueur, "SAVE")) {
             clearTerminal();
@@ -422,20 +438,29 @@ class CultureParty extends Program {
                 effectuerDeplacement(resde, map);
                 affichageCaseActuelle(map);
                 clearLines(3);
-                lancerEvent(map);
+                lancerEvent(map, jeuamogus, jeuunolingo, jeugrammaire);
                 print("\n\n");
             }
         }
         if (!equals(inputJoueur, "SAVE")){
+            clearTerminal();
+            print("\n\n\n\n\n");
             for (int i=0;i<132/2-62/2;i++) print(" ");
             print("Bravo ! Tu as fini cette partie avec un total de ");
             text("yellow");
-            print(joueur.pieces + " pièces !\n");
+            print(joueur.pieces + " pièces !");
             reset();
             bddScore = modifTabClassement(joueur.nom,joueur.pieces,bddScore);
+            print("\n\n\n");
+            afficherTexte("MEILLEURS SCORES");
+            afficherTexte("───────────────────────────────────────");
             saveCSV(bddScore,"../ressources/TopScore.csv");
-            print("\n\n");
             afficherTableauScore(bddScore);
+            afficherTexte("───────────────────────────────────────");
+            print("\n\n");
+            afficherTexte("┌───────────────────────────────────────┐");
+            afficherTexte("│ Appuie sur Entrée pour quitter le jeu │");
+            afficherTexte("└───────────────────────────────────────┘");
             readString();
             clearTerminal();
         } else {

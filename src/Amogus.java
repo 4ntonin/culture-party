@@ -124,9 +124,7 @@ class Amogus extends Program {
         cp.clearTerminal();
         
         int piecesgagnees = 0;
-        println(length(bddQuestion));
         QuestionImposteur selection = tirageQuestion();
-        println(length(bddQuestion));
         afficherAmogus();
         afficherTheme(selection);
         cp.afficherTexte("──────────────────────────────────────────────────────────────────");

@@ -81,9 +81,7 @@ class Unolingo extends Program {
         cp.clearTerminal();
 
         int piecesgagnees = 0;
-        println(length(bddQuestion));
         QuestionLingo selection = tirageQuestion();
-        println(length(bddQuestion));
         afficherQuestion(selection);
         print("\n\n\n");
         cp.afficherTexte("Entrer la réponse :");

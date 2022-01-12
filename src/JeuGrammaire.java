@@ -81,9 +81,7 @@ class JeuGrammaire extends Program {
         readString();
         cp.clearTerminal();
         
-        println(length(bddQuestion));
         QuestionGrammaire selection = tirageQuestion();
-        println(length(bddQuestion));
         afficherQuestion(selection);
         cp.afficherTexte("A : " + selection.choix[0]);
         cp.afficherTexte("─────────────────────────────────────────────────");

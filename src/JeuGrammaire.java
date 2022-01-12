@@ -48,10 +48,20 @@ class JeuGrammaire extends Program {
     int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
-        cp.afficherTexte("Le jeu de \"Grammaire\"");
+        String[] chaine = new String[]{" _______               __     __      _______                                      __             ",
+                                       "|     __|.-----.--.--.|__|.--|  |    |     __|.----.---.-.--------.--------.---.-.|__|.----.-----.",
+                                       "|__     ||  _  |  |  ||  ||  _  |    |    |  ||   _|  _  |        |        |  _  ||  ||   _|  -__|",
+                                       "|_______||__   |_____||__||_____|    |_______||__| |___._|__|__|__|__|__|__|___._||__||__| |_____|",
+                                       "            |__|                                                                                  "};
+        text("blue");
+        cp.afficherTexte(chaine);
+        reset();
         print("\n\n");
-        cp.afficherTexte("les règles : un question sera posée il te faut selectionner la bonne réponse.");
-        cp.afficherTexte("Appuie sur Entrée pour lancer le jeu");
+        cp.afficherTexte("Une question de grammaire te sera posée, tu dois selectionner la bonne réponse.");
+        print("\n\n\n");
+        cp.afficherTexte("┌──────────────────────────────────────┐");
+        cp.afficherTexte("│ Appuie sur Entrée pour lancer le jeu │");
+        cp.afficherTexte("└──────────────────────────────────────┘");
         readString();
         cp.clearTerminal();
         

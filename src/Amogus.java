@@ -89,10 +89,21 @@ class Amogus extends Program {
     int lancerJeu(){
         cp.clearTerminal();
         print("\n\n\n\n\n");
-        cp.afficherTexte("Le jeu de l'imposteur");
+        String[] chaine = new String[]{" _______                                   ",
+                                       "|   _   |.--------.-----.-----.--.--.-----.",
+                                       "|       ||        |  _  |  _  |  |  |__ --|",
+                                       "|___|___||__|__|__|_____|___  |_____|_____|",
+                                       "                        |_____|            "};
+        text("red");
+        cp.afficherTexte(chaine);
+        reset();
         print("\n\n\n");
-        cp.afficherTexte("Les règles : un thème sera donné, parmi les réponses que vous donne les personnes, une est fausse.");
+        cp.afficherTexte("Un thème sera donné, parmi les affirmations que vous donnent les personnes, une est fausse.");
         cp.afficherTexte("Votre mission si vous l'acceptez : Trouver l'imposteur.");
+        print("\n\n\n");
+        cp.afficherTexte("┌──────────────────────────────────────┐");
+        cp.afficherTexte("│ Appuie sur Entrée pour lancer le jeu │");
+        cp.afficherTexte("└──────────────────────────────────────┘");
         readString();
         cp.clearTerminal();
         

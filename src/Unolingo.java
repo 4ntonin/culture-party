@@ -44,22 +44,36 @@ class Unolingo extends Program {
 
     int lancerJeu(){
         cp.clearTerminal();
-        print("\n\n\n\n\n");
-        cp.afficherTexte("Unolingo");
+        print("\n\n\n\n");
+        String[] chaine = new String[]{"  ___ ___             __ __                   ",
+                                       " |   Y   .-----.-----|  |__.-----.-----.-----.",
+                                       " |.  |   |     |  _  |  |  |     |  _  |  _  |",
+                                       " |.  |   |__|__|_____|__|__|__|__|___  |_____|",
+                                       " |:  |   |                       |_____|      ",
+                                       " |::.. . |                                    ",
+                                       " `-------'                                    "};
+        text("green");
+        cp.afficherTexte(chaine);
+        reset();
         print("\n\n");
-        cp.afficherTexte("Les règles : un mot en anglais te sera donné, il suffit d'y entrer la traduction en français.");
-        cp.afficherTexte("Pour passer au jeu, appuie sur Entrée.");
+        cp.afficherTexte("Un mot anglais te sera donné, il te faudra entrer la traduction en français.");
+        print("\n\n\n");
+        cp.afficherTexte("┌──────────────────────────────────────┐");
+        cp.afficherTexte("│ Appuie sur Entrée pour lancer le jeu │");
+        cp.afficherTexte("└──────────────────────────────────────┘");
         readString();
         cp.clearTerminal();
 
         int piecesgagnees = 0;
         QuestionLingo selection = tirageQuestion(bddQuestion);
         afficherQuestion(selection);
+        print("\n\n\n");
         cp.afficherTexte("Entrer la réponse :");
         for (int i=0;i<132/2-2;i++) print(" ");
         String choix_joueur_input = "";
         choix_joueur_input = readString();
         choix_joueur_input = toLowerCase(choix_joueur_input); 
+        print("\n\n\n");
         if (equals(selection.traduction,choix_joueur_input)){
             piecesgagnees = 2;
             cp.afficherTexte("Bien joué ! Tu as trouvé la bonne traduction !");

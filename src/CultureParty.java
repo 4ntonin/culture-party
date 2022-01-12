@@ -238,6 +238,11 @@ class CultureParty extends Program {
         }
     }
 
+    void testContient() {
+        assertTrue(contient('c', "caracas"));
+        assertTrue(contient(',', "mais, non"));
+        assertFalse(contient('p', "Mélodie"));
+    }
     boolean contient(String s, char c) {
         boolean res = false;
         int i = 0, len = length(s);

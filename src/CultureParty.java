@@ -239,9 +239,9 @@ class CultureParty extends Program {
     }
 
     void testContient() {
-        assertTrue(contient('c', "caracas"));
-        assertTrue(contient(',', "mais, non"));
-        assertFalse(contient('p', "Mélodie"));
+        assertTrue(contient("caracas", 'c'));
+        assertTrue(contient("mais, non", ','));
+        assertFalse(contient("Mélodie", 'p'));
     }
     boolean contient(String s, char c) {
         boolean res = false;
